@@ -1,0 +1,46 @@
+name: moarTP
+main: com.ofallonminecraft.moarTP.moarTP
+version: 0.21
+
+commands:
+  unclaim:
+    description: Remove a location from the system.
+    usage: /unclaim [location]
+    permission: moarTP.unclaim
+    permission-message: You must be an op to use this command.
+  view:
+    description: View all locations in the system.
+    usage: /view
+    permission: moarTP.view
+    permission-message: You should have permission to use this command.
+  goto:
+    description: Teleport to a location.
+    usage: /goto [location]
+    permission: moarTP.goto
+    permission-message: You must be a player to use this command.
+  claim:
+    description: Claim a new location.
+    usage: /claim [location]
+    permission: moarTP.claim
+    permission-message: You must be a player to use this command.
+
+permissions:
+  moarTP.*:
+    description: Gives access to all moarTP commands
+    children:
+      moarTP.unclaim: true
+      moarTP.view: true
+      moarTP.goto: true
+      moarTP.claim: true
+  moarTP.unclaim:
+    description: Remove a location from the system.
+    default: op
+  moarTP.view:
+    description: View all locations in the system.
+    default: true
+  moarTP.goto:
+    description: Teleport to a location.
+    default: true
+  moarTP.claim:
+    description: Claim a new location.
+    default: true
