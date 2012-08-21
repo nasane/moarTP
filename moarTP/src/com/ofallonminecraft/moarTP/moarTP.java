@@ -117,10 +117,17 @@ public class moarTP extends JavaPlugin
 
 			// ----- VIEW ----- //
 
-			Set<String> viewLocs = locations.keySet();
-			Iterator<String> i = viewLocs.iterator();
-			while (i.hasNext())
-				sender.sendMessage((String)i.next());
+			Set<String> viewLocs = locations.keySet(); // set of locations
+			Iterator<String> i = viewLocs.iterator();  // iterator on set of locs
+			String toView;                             // output string
+			int numPerLine = (viewLocs.size()/10);     // number of locs to be displayed per line minus one
+			while (i.hasNext()) {
+				toView = i.next();                  // add one location to the output string
+				for (int j=0; j<numPerLine; j++){   // append the rest of the line to the output string
+					toView += ("   " + i.next());
+				}
+				sender.sendMessage(toView);  // output the string
+			}
 			return true;
 
 			// ----- END VIEW ----- //

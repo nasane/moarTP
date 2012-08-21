@@ -1,4 +1,4 @@
-moarTP v0.21
+moarTP v0.22
 Author: Nathan Bossart
 Website: http://ofallonminecraft.com/
 Contact: info@ofallonminecraft.com
@@ -21,4 +21,16 @@ This is the first publicly released beta of this Minecraft Plugin.  New features
 
 
 Instructions for use:
-Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server.  Reload the server twice.  It should be ready to go! (The first-run problem should be fixed as of version 0.21)
+Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
+
+-----Changelog-----
+
+v0.22
+-Adjusted output of /view to account for servers with many locations defined.
+
+v0.21
+-Fixed first-run problem
+-Changed directory of storage file to ~/plugins/moarTP/moarTP_locs.bin
+
+v0.20
+-First beta
