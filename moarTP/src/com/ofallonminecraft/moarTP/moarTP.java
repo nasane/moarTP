@@ -39,7 +39,7 @@ public class moarTP extends JavaPlugin
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 	}
 
@@ -93,13 +93,13 @@ public class moarTP extends JavaPlugin
 					catch (Exception e) {
 						e.printStackTrace();
 					}
-					sender.sendMessage("Location successfully deleted from the library.");
+					sender.sendMessage(args[0]+" was successfully deleted from the library.");
 				}
 
 				// if the location doesn't exist in the hashmap, present an error message
 				else 
 				{
-					sender.sendMessage("That location doesn't exist in the library!");
+					sender.sendMessage(args[0]+" doesn't exist in the library!");
 				}
 				return true;
 
@@ -126,25 +126,32 @@ public class moarTP extends JavaPlugin
 
 			// ----- VIEW ----- //
 
-			Set<String> viewLocs = locations.keySet(); // set of locations
-			List<String> sortedLocs = new ArrayList<String>(viewLocs);
-			Collections.sort(sortedLocs);
-			Iterator<String> i = sortedLocs.iterator();  // iterator on set of locs
-			int numPerLine = (viewLocs.size()/10);       // number of locs to be displayed per line minus one
+			Set<String> viewLocs = locations.keySet();   // set of locations
+			List<String> sortedLocs = new ArrayList<String>(viewLocs);  // create a list of the locations
+			Collections.sort(sortedLocs);                // sort the list
+			Iterator<String> i = sortedLocs.iterator();  // iterator on list of locs
+			int numPerLine = ((viewLocs.size()-1)/10);   // number of locs to be displayed per line minus one
+
 			int maxLength = 0;
 			while (i.hasNext()) {                        // find the maximum length of an entry
 				int localLength = i.next().length();
 				if (localLength>maxLength) maxLength=localLength;
 			}
-			int columnSpace = maxLength+3;   // determine column size
-			i = sortedLocs.iterator();       // reinitialize iterator
+			int columnSpace = maxLength+3;               // determine column size
+			
+			i = sortedLocs.iterator();                   // reinitialize iterator
 			while (i.hasNext()) {
-				String toView = i.next();           // add one location to the output string
-				toView += StringUtils.repeat(" ",(columnSpace-toView.length()));   // adjust for column space
-				for (int j=0; j<numPerLine; j++){   // append the rest of the line to the output string
-					if (i.hasNext()) toView += StringUtils.repeat(" ",(columnSpace*(j+1)-toView.length()))+i.next();  // adjust for column space
+				// add one location to the output string
+				String toView = i.next();
+				// adjust for colum space
+				toView += StringUtils.repeat(" ",(columnSpace-toView.length()));
+				// append the rest of the line to the output string
+				for (int j=0; j<numPerLine; j++){ 
+					// adjust for column space
+					if (i.hasNext()) toView += StringUtils.repeat(" ",(columnSpace*(j+1)-toView.length()))+i.next();
 				}
-				sender.sendMessage(toView);  // output the string
+				// output the string
+				sender.sendMessage(toView);
 			}
 			return true;
 
@@ -189,7 +196,7 @@ public class moarTP extends JavaPlugin
 					}
 					else
 					{
-						player.sendMessage("Location not in library!");
+						player.sendMessage(args[0]+" is not in the library!");
 					}
 
 					return true;
@@ -225,7 +232,7 @@ public class moarTP extends JavaPlugin
 
 					if (locations.containsKey(args[0].toLowerCase()))
 					{
-						player.sendMessage("That location is already in the library!");
+						player.sendMessage(args[0]+" is already in the library!");
 					}
 					else
 					{
@@ -240,7 +247,7 @@ public class moarTP extends JavaPlugin
 							e.printStackTrace();
 						}
 
-						player.sendMessage("Location successfully saved to library.");
+						player.sendMessage(args[0]+" successfully saved to library.");
 					}
 					return true;
 
