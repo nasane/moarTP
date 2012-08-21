@@ -1,4 +1,4 @@
-moarTP v0.22
+moarTP v0.24
 Author: Nathan Bossart
 Website: http://ofallonminecraft.com/
 Contact: info@ofallonminecraft.com
@@ -24,6 +24,11 @@ Instructions for use:
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 -----Changelog-----
+
+v0.24
+-Truly fixed first-run problem
+-Adjusted output of /view into standardized columns
+-Adjusted output of /view to sort the locations
 
 v0.22
 -Adjusted output of /view to account for servers with many locations defined.

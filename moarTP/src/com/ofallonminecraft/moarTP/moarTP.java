@@ -1,7 +1,11 @@
 package com.ofallonminecraft.moarTP;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.bukkit.Location;
@@ -9,6 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.apache.commons.lang.StringUtils;
 
 public class moarTP extends JavaPlugin
 {
@@ -20,15 +25,19 @@ public class moarTP extends JavaPlugin
 	{
 		try
 		{
-			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+			// if file exists, load it
+			if (new File("plugins/moarTP/moarTP_locs.bin").exists()) {
+				locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");	
+			} else {
+				// if the file doesn't exist, create and initialize it
+				new File("plugins/moarTP").mkdir();
+				new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+			}
 			getLogger().info("moarTP has been enabled");
 		}
 		catch (Exception e) {
-			try {
-				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
 			e.printStackTrace();
 			
 		}
@@ -118,13 +127,22 @@ public class moarTP extends JavaPlugin
 			// ----- VIEW ----- //
 
 			Set<String> viewLocs = locations.keySet(); // set of locations
-			Iterator<String> i = viewLocs.iterator();  // iterator on set of locs
-			String toView;                             // output string
-			int numPerLine = (viewLocs.size()/10);     // number of locs to be displayed per line minus one
+			List<String> sortedLocs = new ArrayList<String>(viewLocs);
+			Collections.sort(sortedLocs);
+			Iterator<String> i = sortedLocs.iterator();  // iterator on set of locs
+			int numPerLine = (viewLocs.size()/10);       // number of locs to be displayed per line minus one
+			int maxLength = 0;
+			while (i.hasNext()) {                        // find the maximum length of an entry
+				int localLength = i.next().length();
+				if (localLength>maxLength) maxLength=localLength;
+			}
+			int columnSpace = maxLength+3;   // determine column size
+			i = sortedLocs.iterator();       // reinitialize iterator
 			while (i.hasNext()) {
-				toView = i.next();                  // add one location to the output string
+				String toView = i.next();           // add one location to the output string
+				toView += StringUtils.repeat(" ",(columnSpace-toView.length()));   // adjust for column space
 				for (int j=0; j<numPerLine; j++){   // append the rest of the line to the output string
-					toView += ("   " + i.next());
+					if (i.hasNext()) toView += StringUtils.repeat(" ",(columnSpace*(j+1)-toView.length()))+i.next();  // adjust for column space
 				}
 				sender.sendMessage(toView);  // output the string
 			}
@@ -167,7 +185,7 @@ public class moarTP extends JavaPlugin
 						MTLocation toGoTo = locations.get(args[0].toLowerCase());
 						Location toGoTo2 = new Location(player.getWorld(), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
 						player.teleport(toGoTo2);
-						player.sendMessage("Successfully teleported.");
+						player.sendMessage("Successfully teleported to "+args[0]+'.');
 					}
 					else
 					{
