@@ -1,4 +1,4 @@
-moarTP v0.25
+moarTP v0.30
 Author: Nathan Bossart
 Website: http://ofallonminecraft.com/
 Contact: info@ofallonminecraft.com
@@ -13,17 +13,16 @@ The 4 commands added by this plugin are:
 /unclaim [location] : remove a custom location
 /view : view all locations in the system
 
-The plugin is still in its early stages, as a number of new features and cleaned-up interfaces will soon be added. These include a better display for /view, first-load fixes, the ability to define sub-locations for locations, and more. Source code to be provided via github as soon as possible.
-
-
-Notes:
-This is the first publicly released beta of this Minecraft Plugin.  New features and code tweaks will be added periodically in order to make it the best!
+The plugin is still in its early stages, as a number of new features and cleaned-up interfaces will soon be added. These include a better display for /view, the ability to define sub-locations for locations, a /move command for ops to teleport other players, location descriptions, and more.  Visit http://github.com/ofallonminecraft/moarTP for the latest code!
 
 
 Instructions for use:
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 -----Changelog-----
+
+v0.30
+-Second release
 
 v0.25
 -Cleaned up code and customized error messages.

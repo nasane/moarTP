@@ -143,7 +143,7 @@ public class moarTP extends JavaPlugin
 			while (i.hasNext()) {
 				// add one location to the output string
 				String toView = i.next();
-				// adjust for colum space
+				// adjust for column space
 				toView += StringUtils.repeat(" ",(columnSpace-toView.length()));
 				// append the rest of the line to the output string
 				for (int j=0; j<numPerLine; j++){ 
