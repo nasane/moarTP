@@ -190,7 +190,7 @@ public class moarTP extends JavaPlugin
 					if (locations.containsKey(args[0].toLowerCase()))
 					{
 						MTLocation toGoTo = locations.get(args[0].toLowerCase());
-						Location toGoTo2 = new Location(player.getWorld(), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
+						Location toGoTo2 = new Location(Bukkit.getServer().getWorld(toGoTo.world), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
 						player.teleport(toGoTo2);
 						player.sendMessage("Successfully teleported to "+args[0]+'.');
 					}
