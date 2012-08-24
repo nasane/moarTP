@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.apache.commons.lang.StringUtils;
@@ -19,36 +20,56 @@ import org.apache.commons.lang.StringUtils;
 public class moarTP extends JavaPlugin
 {
 
-	// initialize hashmap to store locations
+	// initialize hashmaps to store locations and descriptions
 	public Map<String, MTLocation> locations = new HashMap<String, MTLocation>();
+	public Map<String, String> descriptions = new HashMap<String, String>();
+	public Map<String, String> claimRecords = new HashMap<String, String>();
 
-	public void onEnable() // on enable, load the location file
+	public void onEnable() // on enable, load the location file and description file
 	{
 		try
 		{
-			// if file exists, load it
-			if (new File("plugins/moarTP/moarTP_locs.bin").exists()) {
-				locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");	
+			if (new File("plugins/moarTP/").exists()) {
+				if (new File("plugins/moarTP/moarTP_locs.bin").exists()) {
+					locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+				} else {
+					new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
+					SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				}
+				if (new File("plugins/moarTP/moarTP_des.bin").exists()) {
+					descriptions = SLAPI.load("plugins/moarTP/moarTP_des.bin");
+				} else {
+					new File("plugin/moarTP/moarTP_des.bin").createNewFile();
+					SLAPI.save(descriptions, "plugins/moarTP/moarTP_des.bin");
+				}
+				if (new File("plugins/moarTP/moarTP_claimRecs.bin").exists()) {
+					claimRecords = SLAPI.load("plugins/moarTP/moarTP_claimRecs.bin");
+				} else {
+					new File("plugin/moarTP/moarTP_claimRecs.bin").createNewFile();
+					SLAPI.save(claimRecords, "plugins/moarTP/moarTP_claimRecs.bin");
+				}
 			} else {
-				// if the file doesn't exist, create and initialize it
 				new File("plugins/moarTP").mkdir();
 				new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
+				new File("plugins/moarTP/moarTP_des.bin").createNewFile();
+				new File("plugins/moarTP/moarTP_claimRecs.bin").createNewFile();
 				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+				SLAPI.save(descriptions, "plugins/moarTP/moarTP_des.bin");
+				SLAPI.save(claimRecords, "plugins/moarTP/moarTP_claimRecs.bin");
 			}
 			getLogger().info("moarTP has been enabled");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-
 		}
 	}
 
-	public void onDisable() // on disable, save the location file
+	public void onDisable() // on disable, save the files
 	{
 		try
 		{
 			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+			SLAPI.save(descriptions, "plugins/moarTP/moarTP_des.bin");
 			getLogger().info("moarTP has been disabled.");
 		}
 		catch (Exception e) {
@@ -60,6 +81,101 @@ public class moarTP extends JavaPlugin
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 
+		
+		
+		
+		// Describe (doesn't require user to be a player)
+		if (cmd.getName().equalsIgnoreCase("describe")) {
+			if (sender.hasPermission("moarTP.describe")) {
+				if (args.length > 1) {
+					sender.sendMessage("Too many arguments!");
+					return false;
+				}
+				if (args.length < 1) {
+					sender.sendMessage("Not enough arguments!");
+					return false;
+				}
+				
+				
+				// ----- DESCRIBE ----- //
+				/* IN PROGRESS
+				if (descriptions.containsKey(args[0])) {
+					if (!claimRecords.containsKey(args[0])) {
+						String accept;
+						sender.sendMessage("No claimer information could be found.  If you would like to add a description, the location will be assigned to you.  Would you like to continue? (y/n): ");
+						
+					}
+				}
+				
+				return true;
+				*/
+				
+				// ----- END DESCRIBE ----- //
+				
+			}
+			sender.sendMessage("You don't have permission to do this!");
+			return false;
+		}
+		
+		
+		
+		
+
+		// Move (doesn't require user to be a player)
+		if (cmd.getName().equalsIgnoreCase("move")) 
+		{
+
+			// check user permissions
+			if (sender.hasPermission("moarTP.unclaim")) 
+			{
+
+				// check number of arguments
+				if (args.length > 2) 
+				{
+					sender.sendMessage("Too many arguments!");
+					return false;
+				}
+				if (args.length < 2) 
+				{
+					sender.sendMessage("Not enough arguments!");
+					return false;
+				}
+
+
+				// ----- MOVE ----- //
+
+				if (locations.containsKey(args[1].toLowerCase())) {
+					MTLocation toGoTo = locations.get(args[1].toLowerCase());
+					Location toGoTo2 = new Location(Bukkit.getServer().getWorld(toGoTo.world), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
+					String playerToMove = null;
+					for (int i=0; i <= args[0].length(); i++){
+						char c = args[0].charAt(i);      
+						if (c!=',' && i!=args[0].length()) {
+							playerToMove += c;
+						} else {
+							if (Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
+								Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
+								sender.sendMessage("Successfully teleported " + playerToMove + " to "+args[1]+'.');
+								playerToMove = null;
+							} else {
+								sender.sendMessage(playerToMove+" could not be found on the server.");
+							}
+						}
+					}	
+				} else {
+					sender.sendMessage(args[1] + " is not in the library!");
+				}
+				return true;
+
+				// ----- END MOVE ----- //
+			}
+
+			// if the user doesn't have permission, present an error message
+			sender.sendMessage("You don't have permission to do this!");
+			return false;
+		}
+
+		
 		// Unclaim (doesn't require user to be a player)
 		if (cmd.getName().equalsIgnoreCase("unclaim")) 
 		{
@@ -139,7 +255,7 @@ public class moarTP extends JavaPlugin
 				if (localLength>maxLength) maxLength=localLength;
 			}
 			int columnSpace = maxLength+3;               // determine column size
-			
+
 			i = sortedLocs.iterator();                   // reinitialize iterator
 			while (i.hasNext()) {
 				// add one location to the output string

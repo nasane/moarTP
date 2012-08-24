@@ -1,6 +1,6 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.31
+version: 0.32
 
 commands:
   unclaim:
@@ -23,6 +23,16 @@ commands:
     usage: /claim [location]
     permission: moarTP.claim
     permission-message: You must be a player to use this command.
+  move:
+    description: Move a player to a custom location.
+    usage: /move [player1,player2,player3,...] [location]
+    permission: moarTP.move
+    permission-message: You must be an op to use this command.
+  describe:
+    description: Add a description to a custom location.
+    usage: /describe [location]
+    permission: moarTP.describe
+    permission-message: You should have permission to use this command.
 
 permissions:
   moarTP.*:
@@ -32,6 +42,8 @@ permissions:
       moarTP.view: true
       moarTP.goto: true
       moarTP.claim: true
+      moarTP.move: true
+      moarTP.describe: true
   moarTP.unclaim:
     description: Remove a location from the system.
     default: op
@@ -43,4 +55,10 @@ permissions:
     default: true
   moarTP.claim:
     description: Claim a new location.
+    default: true
+  moarTP.move:
+    description: Move a player to a custom location.
+    default: op
+  moarTP.describe:
+    description: Add a description to a custom location.
     default: true
