@@ -1,8 +1,11 @@
 package com.ofallonminecraft.moarTP;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.apache.commons.lang.StringUtils;
@@ -22,8 +24,7 @@ public class moarTP extends JavaPlugin
 
 	// initialize hashmaps to store locations and descriptions
 	public Map<String, MTLocation> locations = new HashMap<String, MTLocation>();
-	public Map<String, String> descriptions = new HashMap<String, String>();
-	public Map<String, String> claimRecords = new HashMap<String, String>();
+	public Map<String, String> info = new HashMap<String, String>();
 
 	public void onEnable() // on enable, load the location file and description file
 	{
@@ -36,26 +37,18 @@ public class moarTP extends JavaPlugin
 					new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
 					SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
 				}
-				if (new File("plugins/moarTP/moarTP_des.bin").exists()) {
-					descriptions = SLAPI.load("plugins/moarTP/moarTP_des.bin");
+				if (new File("plugins/moarTP/moarTP_info.bin").exists()) {
+					info = SLAPI.load("plugins/moarTP/moarTP_info.bin");
 				} else {
-					new File("plugin/moarTP/moarTP_des.bin").createNewFile();
-					SLAPI.save(descriptions, "plugins/moarTP/moarTP_des.bin");
-				}
-				if (new File("plugins/moarTP/moarTP_claimRecs.bin").exists()) {
-					claimRecords = SLAPI.load("plugins/moarTP/moarTP_claimRecs.bin");
-				} else {
-					new File("plugin/moarTP/moarTP_claimRecs.bin").createNewFile();
-					SLAPI.save(claimRecords, "plugins/moarTP/moarTP_claimRecs.bin");
+					new File("plugins/moarTP/moarTP_info.bin").createNewFile();
+					SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
 				}
 			} else {
 				new File("plugins/moarTP").mkdir();
 				new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_des.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_claimRecs.bin").createNewFile();
+				new File("plugins/moarTP/moarTP_info.bin").createNewFile();
 				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				SLAPI.save(descriptions, "plugins/moarTP/moarTP_des.bin");
-				SLAPI.save(claimRecords, "plugins/moarTP/moarTP_claimRecs.bin");
+				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
 			}
 			getLogger().info("moarTP has been enabled");
 		}
@@ -69,7 +62,7 @@ public class moarTP extends JavaPlugin
 		try
 		{
 			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-			SLAPI.save(descriptions, "plugins/moarTP/moarTP_des.bin");
+			SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
 			getLogger().info("moarTP has been disabled.");
 		}
 		catch (Exception e) {
@@ -81,45 +74,45 @@ public class moarTP extends JavaPlugin
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 
-		
-		
-		
-		// Describe (doesn't require user to be a player)
-		if (cmd.getName().equalsIgnoreCase("describe")) {
-			if (sender.hasPermission("moarTP.describe")) {
-				if (args.length > 1) {
+
+
+		// About (doesn't require user to be a player)
+		if (cmd.getName().equalsIgnoreCase("about"))
+		{
+			if (sender.hasPermission("moarTP.about"))
+			{
+				if (args.length > 1)
+				{
 					sender.sendMessage("Too many arguments!");
 					return false;
 				}
-				if (args.length < 1) {
+				if (args.length < 1)
+				{
 					sender.sendMessage("Not enough arguments!");
 					return false;
 				}
-				
-				
-				// ----- DESCRIBE ----- //
-				/* IN PROGRESS
-				if (descriptions.containsKey(args[0])) {
-					if (!claimRecords.containsKey(args[0])) {
-						String accept;
-						sender.sendMessage("No claimer information could be found.  If you would like to add a description, the location will be assigned to you.  Would you like to continue? (y/n): ");
-						
+
+				// ----- ABOUT ----- //
+				if (locations.containsKey(args[0].toLowerCase())) {
+					if (info.containsKey(args[0].toLowerCase())) {
+						// retrieve info and display to sender
+						String locInfo = info.get(args[0].toLowerCase());
+						sender.sendMessage(locInfo);
+					} else {
+						sender.sendMessage("Information for "+args[0]+" is unavailable. It appears that this location was created with an earlier version of the moarTP plugin.");
 					}
+				} else {
+					sender.sendMessage(args[0] + " is not in the library!");
 				}
-				
+
 				return true;
-				*/
-				
-				// ----- END DESCRIBE ----- //
-				
+				// ----- END ABOUT ----- //
 			}
 			sender.sendMessage("You don't have permission to do this!");
 			return false;
 		}
-		
-		
-		
-		
+
+
 
 		// Move (doesn't require user to be a player)
 		if (cmd.getName().equalsIgnoreCase("move")) 
@@ -147,16 +140,17 @@ public class moarTP extends JavaPlugin
 				if (locations.containsKey(args[1].toLowerCase())) {
 					MTLocation toGoTo = locations.get(args[1].toLowerCase());
 					Location toGoTo2 = new Location(Bukkit.getServer().getWorld(toGoTo.world), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
-					String playerToMove = null;
+					String playerToMove = "";
 					for (int i=0; i <= args[0].length(); i++){
-						char c = args[0].charAt(i);      
-						if (c!=',' && i!=args[0].length()) {
+						char c = ',';
+						if (i!=args[0].length()) c = args[0].charAt(i);      
+						if (c!=',') {
 							playerToMove += c;
 						} else {
 							if (Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
 								Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
-								sender.sendMessage("Successfully teleported " + playerToMove + " to "+args[1]+'.');
-								playerToMove = null;
+								sender.sendMessage("Successfully teleported " + playerToMove + " to "+args[1].toLowerCase()+'.');
+								playerToMove = "";
 							} else {
 								sender.sendMessage(playerToMove+" could not be found on the server.");
 							}
@@ -175,7 +169,7 @@ public class moarTP extends JavaPlugin
 			return false;
 		}
 
-		
+
 		// Unclaim (doesn't require user to be a player)
 		if (cmd.getName().equalsIgnoreCase("unclaim")) 
 		{
@@ -209,6 +203,17 @@ public class moarTP extends JavaPlugin
 					}
 					catch (Exception e) {
 						e.printStackTrace();
+					}
+					if (info.containsKey(args[0].toLowerCase())) {
+						// delete info
+						info.remove(args[0].toLowerCase());
+						try
+						{
+							SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					sender.sendMessage(args[0]+" was successfully deleted from the library.");
 				}
@@ -335,14 +340,22 @@ public class moarTP extends JavaPlugin
 				{
 
 					// check number of arguments
-					if (args.length > 1) {
-						sender.sendMessage("Location name must be one word!");
-						return false;
-					}
 					if (args.length < 1) {
 						sender.sendMessage("Must enter a location name!");
 						return false;
 					}
+					int numArguments = args.length;
+					if (numArguments>1) {
+						char quote = '"';
+						String quoteString = "";
+						quoteString += quote;
+						if (!(args[1].startsWith(quoteString) && args[numArguments-1].endsWith(quoteString))) {
+							sender.sendMessage("Location name or description not formatted correctly!");
+							return false;
+						} 
+					}
+
+
 
 
 					// ----- CLAIM ----- //
@@ -363,7 +376,26 @@ public class moarTP extends JavaPlugin
 						catch (Exception e) {
 							e.printStackTrace();
 						}
+						DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+						Date date = new Date();
+						String timeStamp = dateFormat.format(date);
+						String locInfo = "Created by "+player.getDisplayName()+" on "+timeStamp+".";
 
+						// format the description
+						String description = "";
+						for (int i=1; i<args.length; ++i) {
+							description += args[i] + ' ';
+						}
+						description = description.substring(1,description.length()-2 );
+
+						info.put(args[0].toLowerCase(), description + "\n" + locInfo);
+						try
+						{
+							SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
 						player.sendMessage(args[0]+" successfully saved to library.");
 					}
 					return true;
