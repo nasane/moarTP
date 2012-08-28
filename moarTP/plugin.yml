@@ -1,6 +1,6 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.34
+version: 0.35
 
 commands:
   unclaim:
@@ -13,10 +13,10 @@ commands:
     usage: /view
     permission: moarTP.view
     permission-message: You should have permission to use this command.
-  goto:
+  tpto:
     description: Teleport to a location.
-    usage: /goto [location]
-    permission: moarTP.goto
+    usage: /tpto [location]
+    permission: moarTP.tpto
     permission-message: You must be a player to use this command.
   claim:
     description: Claim a new location.
@@ -40,7 +40,7 @@ permissions:
     children:
       moarTP.unclaim: true
       moarTP.view: true
-      moarTP.goto: true
+      moarTP.tpto: true
       moarTP.claim: true
       moarTP.move: true
       moarTP.about: true
@@ -50,7 +50,7 @@ permissions:
   moarTP.view:
     description: View all locations in the system.
     default: true
-  moarTP.goto:
+  moarTP.tpto:
     description: Teleport to a location.
     default: true
   moarTP.claim:

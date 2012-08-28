@@ -288,12 +288,12 @@ public class moarTP extends JavaPlugin
 			Player player = (Player)sender;
 
 
-			// Goto
-			if (cmd.getName().equalsIgnoreCase("goto"))
+			// Tpto
+			if (cmd.getName().equalsIgnoreCase("tpto"))
 			{
 
 				// check user permissions
-				if (sender.hasPermission("moarTP.goto"))
+				if (sender.hasPermission("moarTP.tpto"))
 				{
 
 					// check number of arguments
@@ -307,7 +307,7 @@ public class moarTP extends JavaPlugin
 					}
 
 
-					// ----- GOTO ----- //
+					// ----- TPTO ----- //
 
 					if (locations.containsKey(args[0].toLowerCase()))
 					{
@@ -323,7 +323,7 @@ public class moarTP extends JavaPlugin
 
 					return true;
 
-					// ----- END GOTO ----- //
+					// ----- END TPTO ----- //
 				}
 
 				// if user doesn't have permission, present an error message
