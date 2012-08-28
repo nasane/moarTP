@@ -1,4 +1,4 @@
-moarTP v0.34
+moarTP v0.35
 Author: Nathan Bossart
 Website: http://ofallonminecraft.com/
 Contact: info@ofallonminecraft.com
@@ -8,7 +8,7 @@ Description:
 The moarTP plugin adds 6 new commands for convenient, customized teleportation. Instead of dealing with coordinates or depending on other players, users may save locations to the server for easy teleportation later. This provides for easy navigation between player creations.
 
 The 6 commands added by this plugin are:
-/goto [location] : teleport to a custom location
+/tpto [location] : teleport to a custom location
 /claim [location] (["description"]): define a custom location (where you're standing)
 /unclaim [location] : remove a custom location
 /view : view all locations in the system
@@ -22,6 +22,9 @@ Instructions for use:
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 -----Changelog-----
+
+v0.35
+-Changed /goto to /tpto (for now) due to conflicting command names.
 
 v0.34
 -Added ability to provide description using /claim.
