@@ -72,6 +72,7 @@ public class moarTP extends JavaPlugin
 	
 	
 	
+	
 
 	// ---------- HANDLE THE COMMANDS ---------- //
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -90,7 +91,6 @@ public class moarTP extends JavaPlugin
 
 		// View
 		if ((cmd.getName().equalsIgnoreCase("view")) && (sender.hasPermission("moarTP.view"))) return View.view(sender, args, locations);
-
 
 
 		// ----- Functions that do require the user to be a player ----- //

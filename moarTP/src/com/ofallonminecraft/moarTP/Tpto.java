@@ -10,7 +10,6 @@ public class Tpto {
 	
 	public static boolean tpto(CommandSender sender, String[] args, Map<String, MTLocation> locations, Player player) {
 		
-
 		// check user permissions
 		if (sender.hasPermission("moarTP.tpto"))
 		{
@@ -44,11 +43,9 @@ public class Tpto {
 
 			// ----- END TPTO ----- //
 		}
-
+		
 		// if user doesn't have permission, present an error message
 		sender.sendMessage("You don't have permission to do this!");
 		return false;
-		
 	}
-
 }

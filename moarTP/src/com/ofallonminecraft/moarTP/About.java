@@ -38,6 +38,5 @@ public class About {
 		}
 		sender.sendMessage("You don't have permission to do this!");
 		return false;
-
 	}
 }

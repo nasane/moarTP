@@ -31,9 +31,7 @@ public class Claim {
 					return false;
 				} 
 			}
-
-
-
+			
 
 			// ----- CLAIM ----- //
 
@@ -86,9 +84,5 @@ public class Claim {
 			sender.sendMessage("You don't have permission to do this!");
 			return false;	
 		}
-		
-		
-		
 	}
-
 }

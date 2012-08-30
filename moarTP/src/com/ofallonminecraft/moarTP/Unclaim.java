@@ -11,7 +11,6 @@ public class Unclaim {
 		// check user permissions
 					if (sender.hasPermission("moarTP.unclaim")) 
 					{
-
 						// check number of arguments
 						if (args.length > 1) 
 						{
@@ -65,10 +64,5 @@ public class Unclaim {
 					// if the user doesn't have permission, present an error message
 					sender.sendMessage("You don't have permission to do this!");
 					return false;
-		
-		
-		
-		
 	}
-
 }
