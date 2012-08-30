@@ -1,4 +1,4 @@
-moarTP v0.36
+moarTP v0.37
 Author: Nathan Bossart
 Website: http://ofallonminecraft.com/
 Contact: info@ofallonminecraft.com
@@ -15,13 +15,16 @@ The 6 commands added by this plugin are:
 /about [location] : view location information
 /move [player1(,player2,player3,...)] [location] : teleport other player(s) to a custom location
 
-The plugin is still in its early stages, as a number of new features and cleaned-up interfaces will soon be added. These include the ability to define sub-locations for locations, some sort of map cursors for locations, /gohome and /sethome, and more.  Visit http://github.com/ofallonminecraft/moarTP for the latest code!
+The plugin is still in its early stages, as a number of new features and cleaned-up interfaces will soon be added. These include the ability to define sub-locations for locations, the ability to define secret locations only you can view and teleport to, some sort of map cursors for locations, and more.  Visit http://github.com/ofallonminecraft/moarTP for the latest code!
 
 
 Instructions for use:
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 -----Changelog-----
+
+v0.37
+-Added /sethome and /gohome.
 
 v0.36
 -Encapsulated the code.
