@@ -1,6 +1,6 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.36
+version: 0.37
 
 commands:
   unclaim:
@@ -33,6 +33,16 @@ commands:
     usage: /about [location]
     permission: moarTP.about
     permission-message: You should be able to use this command.
+  sethome:
+    description: Set your personal home location.
+    usage: /sethome [location]
+    permission: moarTP.sethome
+    permission-message: You must be a player to use this command.
+  gohome:
+    description: Go to your personal home location.
+    usage: /gohome
+    permission: moarTP.gohome
+    permission-message: You must be a player to use this command.
 
 permissions:
   moarTP.*:
@@ -44,6 +54,8 @@ permissions:
       moarTP.claim: true
       moarTP.move: true
       moarTP.about: true
+      moarTP.sethome: true
+      moarTP.gohome: true
   moarTP.unclaim:
     description: Remove a location from the system.
     default: op
@@ -61,4 +73,10 @@ permissions:
     default: op
   moarTP.about:
     description: View location information.
+    default: true
+  moarTP.sethome:
+    description: Set your personal home location.
+    default: true
+  moarTP.gohome:
+    description: Go to your personal home location.
     default: true
