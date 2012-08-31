@@ -18,12 +18,12 @@ public class GoHome {
 			}
 
 			// ----- GOHOME ----- //
-			if (homes.containsKey(player.getDisplayName())) {
-				if (locations.containsKey(homes.get(player.getDisplayName()))) {
-					MTLocation toGoTo = locations.get(homes.get(player.getDisplayName()));
+			if (homes.containsKey(player.getName())) {
+				if (locations.containsKey(homes.get(player.getName()))) {
+					MTLocation toGoTo = locations.get(homes.get(player.getName()));
 					Location toGoTo2 = new Location(Bukkit.getServer().getWorld(toGoTo.world), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
 					player.teleport(toGoTo2);
-					player.sendMessage("Successfully teleported to "+homes.get(player.getDisplayName())+'.');
+					player.sendMessage("Successfully teleported to "+homes.get(player.getName())+'.');
 				} else {
 					sender.sendMessage("It appears that your home was deleted from the location library.  Set a new one!");					
 				}

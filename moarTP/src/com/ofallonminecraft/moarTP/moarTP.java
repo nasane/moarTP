@@ -14,9 +14,9 @@ public class moarTP extends JavaPlugin
 	
 	
 	// ---------- INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
-	public Map<String, MTLocation> locations = new HashMap<String, MTLocation>();
-	public Map<String, String> info = new HashMap<String, String>();
-	public Map<String, String> homes = new HashMap<String, String>();
+	public static Map<String, MTLocation> locations = new HashMap<String, MTLocation>();
+	public static Map<String, String> info = new HashMap<String, String>();
+	public static Map<String, String> homes = new HashMap<String, String>();
 	// ---------- END INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
 
 	
@@ -46,7 +46,7 @@ public class moarTP extends JavaPlugin
 					info = SLAPI.load("plugins/moarTP/moarTP_homes.bin");
 				} else {
 					new File("plugins/moarTP/moarTP_homes.bin").createNewFile();
-					SLAPI.save(info, "plugins/moarTP/moarTP_homes.bin");
+					SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
 				}
 			} else {
 				new File("plugins/moarTP").mkdir();
@@ -68,9 +68,10 @@ public class moarTP extends JavaPlugin
 	{
 		try
 		{
-			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-			SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-			SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
+			// saving these at disable seems to be causing problems
+//			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+//			SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
+//			SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
 			getLogger().info("moarTP has been disabled.");
 		}
 		catch (Exception e) {

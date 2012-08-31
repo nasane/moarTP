@@ -9,9 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Claim {
-	
+
 	public static boolean claim(CommandSender sender, String[] args, Map<String, MTLocation> locations, Map<String, String> info, Player player) {
-		
+
 		// check user permissions
 		if (sender.hasPermission("moarTP.claim"))
 		{
@@ -31,7 +31,7 @@ public class Claim {
 					return false;
 				} 
 			}
-			
+
 
 			// ----- CLAIM ----- //
 
@@ -57,13 +57,17 @@ public class Claim {
 				String locInfo = "Created by "+player.getDisplayName()+" on "+timeStamp+".";
 
 				// format the description
-				String description = "";
-				for (int i=1; i<args.length; ++i) {
-					description += args[i] + ' ';
-				}
-				description = description.substring(1,description.length()-2 );
+				if (numArguments>1) {
+					String description = "";
+					for (int i=1; i<args.length; ++i) {
+						description += args[i] + ' ';
+					}
+					description = description.substring(1,description.length()-2 );
 
-				info.put(args[0].toLowerCase(), description + "\n" + locInfo);
+					info.put(args[0].toLowerCase(), description + "\n" + locInfo);
+				} else {
+					info.put(args[0].toLowerCase(), locInfo);
+				}
 				try
 				{
 					SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");

@@ -29,13 +29,13 @@ public class SetHome {
 			if (locations.containsKey(args[0].toLowerCase())) {
 				
 				if (overwrite) {
-					String oldHome = homes.get(player.getDisplayName());
-					homes.remove(player.getDisplayName());
-					homes.put(player.getDisplayName(), args[0].toLowerCase());
+					String oldHome = homes.get(player.getName());
+					homes.remove(player.getName());
+					homes.put(player.getName(), args[0].toLowerCase());
 					sender.sendMessage("Old home ("+oldHome+") overwritten; new home set to "+args[0]); 
 				}
 				else {
-					homes.put(player.getDisplayName(), args[0].toLowerCase());
+					homes.put(player.getName(), args[0].toLowerCase());
 					sender.sendMessage("New home set to "+args[0]+".");
 				}
 				
