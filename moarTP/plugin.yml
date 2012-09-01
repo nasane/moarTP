@@ -1,6 +1,6 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.38
+version: 0.40
 
 commands:
   unclaim:

@@ -40,7 +40,7 @@ public class GoHome {
 					sender.sendMessage("It appears that your home was deleted from the location library.  Set a new one!");					
 				}
 			} else {
-				sender.sendMessage("You are homeless! Set a home with /sethome [location]");
+				sender.sendMessage("You are homeless! Set a home with /sethome [location].");
 			}
 			
 			

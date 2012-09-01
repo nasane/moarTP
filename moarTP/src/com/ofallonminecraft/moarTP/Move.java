@@ -9,16 +9,16 @@ public class Move {
 
 	public static boolean move(CommandSender sender, String[] args) {
 
-		
+
 		Map<String, MTLocation> locations = null;
 		try {
 			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 		// check user permissions
 		if (sender.hasPermission("moarTP.unclaim")) 
 		{
@@ -48,27 +48,29 @@ public class Move {
 					if (c!=',') {
 						playerToMove += c;
 					} else {
-						if (Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
-							Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
-							sender.sendMessage("Successfully teleported " + playerToMove + " to "+args[1].toLowerCase()+'.');
+						if (playerToMove != "") {
+							if (Bukkit.getServer().getPlayer(playerToMove)!=null && Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
+								Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
+								sender.sendMessage("Successfully teleported " + playerToMove + " to "+args[1].toLowerCase()+'.');
+							} else {
+								sender.sendMessage(playerToMove+" could not be found on the server.");
+							}
 							playerToMove = "";
-						} else {
-							sender.sendMessage(playerToMove+" could not be found on the server.");
 						}
 					}
 				}	
 			} else {
 				sender.sendMessage(args[1] + " is not in the library!");
 			}
-			
-			
+
+
 			try {
 				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			
+
+
 			return true;
 
 			// ----- END MOVE ----- //

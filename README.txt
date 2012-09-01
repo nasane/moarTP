@@ -1,4 +1,4 @@
-moarTP v0.38
+moarTP v0.40
 Author: Nathan Bossart
 Website: http://ofallonminecraft.com/
 Contact: info@ofallonminecraft.com
@@ -24,6 +24,10 @@ Instructions for use:
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 -----Changelog-----
+
+v0.40
+-Fixed major bugs in /move.
+-Cleaned up messages a bit.
 
 v0.38
 -Further encapsulated to fix bugs with file access.

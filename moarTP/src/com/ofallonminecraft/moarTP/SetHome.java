@@ -44,7 +44,7 @@ public class SetHome {
 					String oldHome = homes.get(player.getName());
 					homes.remove(player.getName());
 					homes.put(player.getName(), args[0].toLowerCase());
-					sender.sendMessage("Old home ("+oldHome+") overwritten; new home set to "+args[0]); 
+					sender.sendMessage("Old home ("+oldHome+") overwritten; new home set to "+args[0]+"."); 
 				}
 				else {
 					homes.put(player.getName(), args[0].toLowerCase());

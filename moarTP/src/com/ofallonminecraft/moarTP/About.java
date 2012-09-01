@@ -35,7 +35,7 @@ public class About {
 			if (locations.containsKey(args[0].toLowerCase())) {
 				if (info.containsKey(args[0].toLowerCase())) {
 					// retrieve info and display to sender
-					String locInfo = info.get(args[0].toLowerCase());
+					String locInfo = "\n"+args[0]+":\n"+info.get(args[0].toLowerCase());
 					sender.sendMessage(locInfo);
 				} else {
 					sender.sendMessage("Information for "+args[0]+" is unavailable. It appears that this location was created with an earlier version of the moarTP plugin.");
