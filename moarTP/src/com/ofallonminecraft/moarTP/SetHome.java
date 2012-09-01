@@ -7,9 +7,21 @@ import org.bukkit.entity.Player;
 
 public class SetHome {
 
-	public static boolean sethome(CommandSender sender, String[] args, Map<String, MTLocation> locations, Map<String, String> homes, Player player) {
+	public static boolean sethome(CommandSender sender, String[] args, Player player) {
 		if (sender.hasPermission("moarTP.sethome")) {
 
+			
+			Map<String, MTLocation> locations = null;
+			Map<String, String> homes = null;
+			try {
+				locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+				homes = SLAPI.load("plugins/moarTP/moarTP_homes.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			
 			// check number of arguments
 			if (args.length < 1) {
 				sender.sendMessage("Must enter a location name!");
@@ -49,6 +61,14 @@ public class SetHome {
 				sender.sendMessage(args[0]+" could not be found in the library!  Choose an existing location to be your home.");
 			}
 
+			
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 
 			return true;
 			// ----- END SETHOME ----- //

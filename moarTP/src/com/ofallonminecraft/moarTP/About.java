@@ -5,7 +5,18 @@ import org.bukkit.command.CommandSender;
 
 public class About {
 
-	public static boolean about(CommandSender sender, String[] args, Map<String, MTLocation> locations, Map<String, String> info) {
+	public static boolean about(CommandSender sender, String[] args) {
+
+
+		Map<String, MTLocation> locations = null;
+		Map<String, String> info = null;
+		try {
+			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+			info = SLAPI.load("plugins/moarTP/moarTP_info.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 
 		if (sender.hasPermission("moarTP.about"))
 		{
@@ -32,6 +43,15 @@ public class About {
 			} else {
 				sender.sendMessage(args[0] + " is not in the library!");
 			}
+
+			
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 
 			return true;
 			// ----- END ABOUT ----- //

@@ -10,7 +10,17 @@ import org.bukkit.command.CommandSender;
 
 public class View {
 	
-	public static boolean view(CommandSender sender, String[] args, Map<String, MTLocation> locations) {
+	public static boolean view(CommandSender sender, String[] args) {
+		
+		
+		Map<String, MTLocation> locations = null;
+		try {
+			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		
 
 		// check number of arguments
@@ -33,6 +43,15 @@ public class View {
 			toView += ", " + i.next();
 		}
 		sender.sendMessage(toView);
+		
+		
+		try {
+			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		return true;
 
 		// ----- END VIEW ----- //

@@ -8,7 +8,17 @@ import org.bukkit.entity.Player;
 
 public class Tpto {
 	
-	public static boolean tpto(CommandSender sender, String[] args, Map<String, MTLocation> locations, Player player) {
+	public static boolean tpto(CommandSender sender, String[] args, Player player) {
+		
+		
+		Map<String, MTLocation> locations = null;
+		try {
+			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		
 		// check user permissions
 		if (sender.hasPermission("moarTP.tpto"))
@@ -39,6 +49,13 @@ public class Tpto {
 				player.sendMessage(args[0]+" is not in the library!");
 			}
 
+			
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			return true;
 
 			// ----- END TPTO ----- //

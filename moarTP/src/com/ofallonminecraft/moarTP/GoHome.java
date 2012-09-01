@@ -9,8 +9,20 @@ import org.bukkit.entity.Player;
 
 public class GoHome {
 
-	public static boolean gohome(CommandSender sender, String[] args, Map<String, MTLocation> locations, Map<String, String> homes, Player player) {
+	public static boolean gohome(CommandSender sender, String[] args, Player player) {
 
+		
+		Map<String, MTLocation> locations = null;
+		Map<String, String> homes = null;
+		try {
+			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+			homes = SLAPI.load("plugins/moarTP/moarTP_homes.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 		if (sender.hasPermission("moarTP.gohome")) {
 			if (args.length > 0) {
 				sender.sendMessage("This command doesn't take any arguments!");
@@ -30,6 +42,16 @@ public class GoHome {
 			} else {
 				sender.sendMessage("You are homeless! Set a home with /sethome [location]");
 			}
+			
+			
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
 			return true;
 			// ----- GOHOME ----- //
 

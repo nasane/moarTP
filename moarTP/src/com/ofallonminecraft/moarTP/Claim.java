@@ -10,8 +10,19 @@ import org.bukkit.entity.Player;
 
 public class Claim {
 
-	public static boolean claim(CommandSender sender, String[] args, Map<String, MTLocation> locations, Map<String, String> info, Player player) {
+	public static boolean claim(CommandSender sender, String[] args, Player player) {
 
+		
+		Map<String, MTLocation> locations = null;
+		Map<String, String> info = null;
+		try {
+			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+			info = SLAPI.load("plugins/moarTP/moarTP_info.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		// check user permissions
 		if (sender.hasPermission("moarTP.claim"))
 		{
@@ -77,6 +88,16 @@ public class Claim {
 				}
 				player.sendMessage(args[0]+" successfully saved to library.");
 			}
+			
+			
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
 			return true;
 
 			// ----- END CLAIM ----- //

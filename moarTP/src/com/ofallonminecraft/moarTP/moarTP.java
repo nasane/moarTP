@@ -30,21 +30,15 @@ public class moarTP extends JavaPlugin
 		try
 		{
 			if (new File("plugins/moarTP/").exists()) {
-				if (new File("plugins/moarTP/moarTP_locs.bin").exists()) {
-					locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
-				} else {
+				if (!(new File("plugins/moarTP/moarTP_locs.bin").exists())) {
 					new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
 					SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
 				}
-				if (new File("plugins/moarTP/moarTP_info.bin").exists()) {
-					info = SLAPI.load("plugins/moarTP/moarTP_info.bin");
-				} else {
+				if (!(new File("plugins/moarTP/moarTP_info.bin").exists())) {
 					new File("plugins/moarTP/moarTP_info.bin").createNewFile();
 					SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
 				}
-				if (new File("plugins/moarTP/moarTP_homes.bin").exists()) {
-					info = SLAPI.load("plugins/moarTP/moarTP_homes.bin");
-				} else {
+				if (!(new File("plugins/moarTP/moarTP_homes.bin").exists())) {
 					new File("plugins/moarTP/moarTP_homes.bin").createNewFile();
 					SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
 				}
@@ -66,17 +60,7 @@ public class moarTP extends JavaPlugin
 
 	public void onDisable() // on disable, save the files
 	{
-		try
-		{
-			// saving these at disable seems to be causing problems
-//			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-//			SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-//			SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
-			getLogger().info("moarTP has been disabled.");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		getLogger().info("moarTP hs been disabled.");
 	}
 	// ---------- END MANAGE FILES WHEN ENABLING/DISABLING THE PLUGIN ---------- //
 
@@ -92,16 +76,24 @@ public class moarTP extends JavaPlugin
 		// ----- Functions that do not require user to be a player ----- //
 
 		// About
-		if (cmd.getName().equalsIgnoreCase("about")) return About.about(sender, args, locations, info);
+		if (cmd.getName().equalsIgnoreCase("about")) {
+			return About.about(sender, args);
+		}
 
 		// Move
-		if (cmd.getName().equalsIgnoreCase("move")) return Move.move(sender, args, locations);
+		if (cmd.getName().equalsIgnoreCase("move")) {
+			return Move.move(sender, args);
+		}
 
 		// Unclaim
-		if (cmd.getName().equalsIgnoreCase("unclaim")) return Unclaim.unclaim(sender, args, locations, info);
+		if (cmd.getName().equalsIgnoreCase("unclaim")) {
+			return Unclaim.unclaim(sender, args);
+		}
 
 		// View
-		if ((cmd.getName().equalsIgnoreCase("view")) && (sender.hasPermission("moarTP.view"))) return View.view(sender, args, locations);
+		if ((cmd.getName().equalsIgnoreCase("view")) && (sender.hasPermission("moarTP.view"))) {
+			return View.view(sender, args);
+		}
 
 
 		// ----- Functions that do require the user to be a player ----- //
@@ -111,16 +103,24 @@ public class moarTP extends JavaPlugin
 			Player player = (Player)sender;
 
 			// Tpto
-			if (cmd.getName().equalsIgnoreCase("tpto")) return Tpto.tpto(sender, args, locations, player);
+			if (cmd.getName().equalsIgnoreCase("tpto")) {
+				return Tpto.tpto(sender, args, player);
+			}
 
 			// Claim
-			if (cmd.getName().equalsIgnoreCase("claim")) return Claim.claim(sender, args, locations, info, player);
+			if (cmd.getName().equalsIgnoreCase("claim")) {
+				return Claim.claim(sender, args, player);
+			}
 			
 			// SetHome
-			if (cmd.getName().equalsIgnoreCase("sethome")) return SetHome.sethome(sender, args, locations, homes, player);
+			if (cmd.getName().equalsIgnoreCase("sethome")) {
+				return SetHome.sethome(sender, args, player);
+			}
 			
 			// GoHome
-			if (cmd.getName().equalsIgnoreCase("gohome")) return GoHome.gohome(sender, args, locations, homes, player);
+			if (cmd.getName().equalsIgnoreCase("gohome")) {
+				return GoHome.gohome(sender, args, player);
+			}
 			
 		} else {
 			// if user is not a player, present an error message

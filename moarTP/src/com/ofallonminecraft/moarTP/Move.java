@@ -7,8 +7,18 @@ import org.bukkit.command.CommandSender;
 
 public class Move {
 
-	public static boolean move(CommandSender sender, String[] args, Map<String, MTLocation> locations) {
+	public static boolean move(CommandSender sender, String[] args) {
 
+		
+		Map<String, MTLocation> locations = null;
+		try {
+			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 		// check user permissions
 		if (sender.hasPermission("moarTP.unclaim")) 
 		{
@@ -50,6 +60,15 @@ public class Move {
 			} else {
 				sender.sendMessage(args[1] + " is not in the library!");
 			}
+			
+			
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
 			return true;
 
 			// ----- END MOVE ----- //
