@@ -29,49 +29,49 @@ The plugin is still in its early stages, as a number of new features and cleaned
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 # Changelog
-v0.40
--Fixed major bugs in /move.
--Cleaned up messages a bit.
+v0.40  
+  -Fixed major bugs in /move.  
+  -Cleaned up messages a bit.  
 
-v0.38
--Further encapsulated to fix bugs with file access.
+v0.38  
+  -Further encapsulated to fix bugs with file access.  
 
-v0.37
--Added /sethome and /gohome.
+v0.37  
+  -Added /sethome and /gohome.  
 
-v0.36
--Encapsulated the code.
--Simplified /view for a cleaner interface.
+v0.36  
+  -Encapsulated the code.  
+  -Simplified /view for a cleaner interface.  
 
-v0.35
--Changed /goto to /tpto (for now) due to conflicting command names.
+v0.35  
+  -Changed /goto to /tpto (for now) due to conflicting command names.  
 
 
-v0.34
--Added ability to provide description using /claim.
--Added /about to view the location description.
--Added /move so that ops can move player(s) to a custom location.
+v0.34  
+  -Added ability to provide description using /claim.  
+  -Added /about to view the location description.  
+  -Added /move so that ops can move player(s) to a custom location.  
 
-v0.31
--Fixed a major bug that caused errors in inter-world teleporting.
+v0.31  
+  -Fixed a major bug that caused errors in inter-world teleporting.  
 
-v0.30
--Second release
+v0.30  
+  -Second release  
 
-v0.25
--Cleaned up code and customized error messages.
+v0.25  
+  -Cleaned up code and customized error messages.  
 
-v0.24
--Truly fixed first-run problem
--Adjusted output of /view into standardized columns
--Adjusted output of /view to sort the locations
+v0.24  
+  -Truly fixed first-run problem  
+  -Adjusted output of /view into standardized columns  
+  -Adjusted output of /view to sort the locations  
 
-v0.22
--Adjusted output of /view to account for servers with many locations defined.
+v0.22  
+  -Adjusted output of /view to account for servers with many locations defined.  
 
-v0.21
--Fixed first-run problem
--Changed directory of storage file to ~/plugins/moarTP/moarTP_locs.bin
+v0.21  
+  -Fixed first-run problem  
+  -Changed directory of storage file to ~/plugins/moarTP/moarTP_locs.bin  
 
-v0.20
--First beta
+v0.20  
+  -First beta  
