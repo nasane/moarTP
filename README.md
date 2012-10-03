@@ -10,16 +10,16 @@ The moarTP plugin adds 8 new commands for convenient, customized teleportation. 
 
 
 The 8 commands added by this plugin are:
-<ul>
-<li>/tpto [location] : teleport to a custom location</li>
-<li>/claim [location] (["description"]): define a custom location (where you're standing)</li>
-<li> /unclaim [location] : remove a custom location</li>
-<li> /view : view all locations in the system</li>
-<li> /about [location] : view location information</li>
-<li> /move [player1(,player2,player3,...)] [location] : teleport other player(s) to a custom location</li>
-<li> /sethome [location] : set your personal home location</li>
-<li> /gohome : go to your personal home location</li>
-</ul>
+
+    /tpto [location] : teleport to a custom location
+    /claim [location] (["description"]): define a custom location (where you're standing)
+    /unclaim [location] : remove a custom location
+    /view : view all locations in the system
+    /about [location] : view location information
+    /move [player1(,player2,player3,...)] [location] : teleport other player(s) to a custom location
+    /sethome [location] : set your personal home location
+    /gohome : go to your personal home location
+
 
 The plugin is still in its early stages, as a number of new features and cleaned-up interfaces will soon be added. These include the ability to define sub-locations for locations, the ability to define secret locations only you can view and teleport to, some sort of map cursors for locations, and more.  Visit <http://github.com/ofallonminecraft/moarTP> for the latest code!
 
