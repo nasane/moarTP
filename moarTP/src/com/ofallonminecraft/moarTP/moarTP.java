@@ -15,8 +15,8 @@ public class moarTP extends JavaPlugin
 	
 	// ---------- INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
 	public static Map<String, MTLocation> locations = new HashMap<String, MTLocation>();
-	public static Map<String, String> info = new HashMap<String, String>();
-	public static Map<String, String> homes = new HashMap<String, String>();
+	public static Map<String, String>     info      = new HashMap<String, String>();
+	public static Map<String, String>     homes     = new HashMap<String, String>();
 	// ---------- END INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
 
 	
