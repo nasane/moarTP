@@ -1,13 +1,13 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.40
+version: 0.41
 
 commands:
   unclaim:
     description: Remove a location from the system.
     usage: /unclaim [location]
     permission: moarTP.unclaim
-    permission-message: You must be an op to use this command.
+    permission-message: You must be an op or the creator of the location to use this command.
   view:
     description: View all locations in the system.
     usage: /view
@@ -58,7 +58,7 @@ permissions:
       moarTP.gohome: true
   moarTP.unclaim:
     description: Remove a location from the system.
-    default: op
+    default: true
   moarTP.view:
     description: View all locations in the system.
     default: true

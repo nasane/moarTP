@@ -18,23 +18,38 @@ public class Unclaim {
 			e.printStackTrace();
 		}
 		
+		// check number of arguments
+		if (args.length > 1) 
+		{
+			sender.sendMessage("Location name must be one word!");
+			return false;
+		}
+		if (args.length < 1) 
+		{
+			sender.sendMessage("Must choose a location to unclaim!");
+			return false;
+		}
 		
+		boolean isCreator = false;
+		String s = sender.toString().substring(17, sender.toString().length()-1);
+		String c = "  ";
+		if (info.get(args[0].toLowerCase()) != null) {
+			if (11+s.length()<=info.get(args[0].toLowerCase()).length()) {
+				c = info.get(args[0].toLowerCase()).substring(11, 11+s.length());
+			} else {
+				sender.sendMessage("You don't have permission to do this!");
+				return false;
+			}
+		} else {
+			sender.sendMessage(args[0]+" doesn't either doesn't exist in the library or was made with an older version of the moarTP plugin!");
+			return false;
+		}
+		if (c.substring(0,c.length()-2)==s) isCreator = true;
+		if (c.endsWith(" ")) isCreator = false; 
 		
 		// check user permissions
-					if (sender.hasPermission("moarTP.unclaim")) 
+					if (sender.isOp() || isCreator) 
 					{
-						// check number of arguments
-						if (args.length > 1) 
-						{
-							sender.sendMessage("Location name must be one word!");
-							return false;
-						}
-						if (args.length < 1) 
-						{
-							sender.sendMessage("Must choose a location to unclaim!");
-							return false;
-						}
-
 
 						// ----- UNCLAIM ----- //
 
