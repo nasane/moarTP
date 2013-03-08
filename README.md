@@ -1,4 +1,4 @@
-# moarTP v0.40
+# moarTP v0.41
 
 Author: Nathan Bossart  
 Website: <http://ofallonminecraft.com/>  
@@ -29,6 +29,10 @@ The plugin is still in its early stages, as a number of new features and cleaned
 Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
 
 # Changelog
+### v0.41
+  -/unclaim now allows location creators to remove their locations.   
+  -/view now displays a nice message instead of an error when there are no locations.   
+
 ### v0.40  
   -Fixed major bugs in /move.  
   -Cleaned up messages a bit.  

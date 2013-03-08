@@ -1,7 +1,6 @@
 package com.ofallonminecraft.moarTP;
 
 import java.util.Map;
-
 import org.bukkit.command.CommandSender;
 
 public class Unclaim {
@@ -30,22 +29,19 @@ public class Unclaim {
 			return false;
 		}
 		
+		// check if user is the creator of the location
 		boolean isCreator = false;
-		String s = sender.toString().substring(17, sender.toString().length()-1);
-		String c = "  ";
 		if (info.get(args[0].toLowerCase()) != null) {
-			if (11+s.length()<=info.get(args[0].toLowerCase()).length()) {
-				c = info.get(args[0].toLowerCase()).substring(11, 11+s.length());
-			} else {
-				sender.sendMessage("You don't have permission to do this!");
-				return false;
-			}
+			String   c       = info.get(args[0].toLowerCase());
+			String   s       = sender.toString().substring(17,sender.toString().length()-1);
+			String[] c_array = c.split("\\s");
+			c = c_array[2];
+			sender.sendMessage(c);
+			sender.sendMessage(s);
+			if (c.equals(s)) isCreator = true;
 		} else {
-			sender.sendMessage(args[0]+" doesn't either doesn't exist in the library or was made with an older version of the moarTP plugin!");
-			return false;
+			sender.sendMessage(args[0]+" either doesn't exist in the library or was made with an ancient version of the moarTP plugin!");
 		}
-		if (c.substring(0,c.length()-2)==s) isCreator = true;
-		if (c.endsWith(" ")) isCreator = false; 
 		
 		// check user permissions
 					if (sender.isOp() || isCreator) 

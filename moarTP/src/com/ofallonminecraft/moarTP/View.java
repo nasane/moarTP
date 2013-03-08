@@ -33,26 +33,29 @@ public class View {
 
 		// ----- VIEW ----- //
 
-		Set<String> viewLocs = locations.keySet();   // set of locations
+		Set<String> viewLocs = locations.keySet();       // set of locations
 		List<String> sortedLocs = new ArrayList<String>(viewLocs);  // create a list of the locations
-		Collections.sort(sortedLocs);                // sort the list
-		Iterator<String> i = sortedLocs.iterator();  // iterator on list of locs
+		if (sortedLocs.size()>0) {
+			Collections.sort(sortedLocs);                // sort the list
+			Iterator<String> i = sortedLocs.iterator();  // iterator on list of locs
 		
-		String toView = i.next();
-		while (i.hasNext()) {
-			toView += ", " + i.next();
+			String toView = i.next();
+			while (i.hasNext()) {
+				toView += ", " + i.next();
+			}
+			sender.sendMessage(toView);
+		
+		
+			try {
+				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			sender.sendMessage("No locations claimed yet. Claim one with /claim <location>");
 		}
-		sender.sendMessage(toView);
 		
-		
-		try {
-			SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		return true;
+			return true;
 
 		// ----- END VIEW ----- //
 
