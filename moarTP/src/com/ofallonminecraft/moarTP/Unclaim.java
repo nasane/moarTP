@@ -42,58 +42,58 @@ public class Unclaim {
 		}
 		
 		// check user permissions
-					if (sender.isOp() || isCreator) 
+		if (sender.isOp() || isCreator) 
+		    {
+			
+			// ----- UNCLAIM ----- //
+			
+			// if the location exists in the hashmap, remove it
+			if (locations.containsKey(args[0].toLowerCase())) 
+			    {
+				locations.remove(args[0].toLowerCase());
+				try
+				    {
+					SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+				    }
+				catch (Exception e) {
+				    e.printStackTrace();
+				}
+				if (info.containsKey(args[0].toLowerCase())) {
+				    // delete info
+				    info.remove(args[0].toLowerCase());
+				    try
 					{
-
-						// ----- UNCLAIM ----- //
-
-						// if the location exists in the hashmap, remove it
-						if (locations.containsKey(args[0].toLowerCase())) 
-						{
-							locations.remove(args[0].toLowerCase());
-							try
-							{
-								SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-							}
-							catch (Exception e) {
-								e.printStackTrace();
-							}
-							if (info.containsKey(args[0].toLowerCase())) {
-								// delete info
-								info.remove(args[0].toLowerCase());
-								try
-								{
-									SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-								}
-								catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-							sender.sendMessage(args[0]+" was successfully deleted from the library.");
-						}
-
-						// if the location doesn't exist in the hashmap, present an error message
-						else 
-						{
-							sender.sendMessage(args[0]+" doesn't exist in the library!");
-						}
-						
-						
-						try {
-							SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-							SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-						
-						return true;
-
-						// ----- END UNCLAIM ----- //
+					    SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
 					}
-
-					// if the user doesn't have permission, present an error message
-					sender.sendMessage("You don't have permission to do this!");
-					return false;
+				    catch (Exception e) {
+					e.printStackTrace();
+				    }
+				}
+				sender.sendMessage(args[0]+" was successfully deleted from the library.");
+			    }
+			
+			// if the location doesn't exist in the hashmap, present an error message
+			else 
+			    {
+				sender.sendMessage(args[0]+" doesn't exist in the library!");
+			    }
+			
+			
+			try {
+			    SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
+			    SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
+			
+			
+			return true;
+			
+			// ----- END UNCLAIM ----- //
+		    }
+		
+		// if the user doesn't have permission, present an error message
+		sender.sendMessage("You don't have permission to do this!");
+		return false;
 	}
 }
