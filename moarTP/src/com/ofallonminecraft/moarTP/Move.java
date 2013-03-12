@@ -2,14 +2,14 @@ package com.ofallonminecraft.moarTP;
 
 import java.util.Map;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.Location;
 
 public class Move {
 
 	public static boolean move(CommandSender sender, String[] args) {
 
-
+		// load locations file
 		Map<String, MTLocation> locations = null;
 		try {
 			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
@@ -20,17 +20,14 @@ public class Move {
 
 
 		// check user permissions
-		if (sender.hasPermission("moarTP.unclaim")) 
-		{
+		if (sender.hasPermission("moarTP.move")) {
 
 			// check number of arguments
-			if (args.length > 2) 
-			{
+			if (args.length > 2) {
 				sender.sendMessage("Too many arguments!");
 				return false;
 			}
-			if (args.length < 2) 
-			{
+			if (args.length < 2) {
 				sender.sendMessage("Not enough arguments!");
 				return false;
 			}
@@ -38,9 +35,15 @@ public class Move {
 
 			// ----- MOVE ----- //
 
+			// check that location exists
 			if (locations.containsKey(args[1].toLowerCase())) {
-				MTLocation toGoTo = locations.get(args[1].toLowerCase());
-				Location toGoTo2 = new Location(Bukkit.getServer().getWorld(toGoTo.world), toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
+				// get location
+				MTLocation toGoTo  = locations.get(args[1].toLowerCase());
+				Location   toGoTo2 = new Location(Bukkit.getServer().getWorld(toGoTo.world), 
+						toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
+
+				// move each comma-separated player to the location
+				// TODO: use split() instead of going char-by-char
 				String playerToMove = "";
 				for (int i=0; i <= args[0].length(); i++){
 					char c = ',';
@@ -49,11 +52,14 @@ public class Move {
 						playerToMove += c;
 					} else {
 						if (playerToMove != "") {
-							if (Bukkit.getServer().getPlayer(playerToMove)!=null && Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
+							if (Bukkit.getServer().getPlayer(playerToMove)!=null && 
+									Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
 								Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
-								sender.sendMessage("Successfully teleported " + playerToMove + " to "+args[1].toLowerCase()+'.');
+								sender.sendMessage("Successfully teleported " + playerToMove 
+										+ " to "+args[1].toLowerCase()+'.');
 							} else {
-								sender.sendMessage(playerToMove+" could not be found on the server.");
+								sender.sendMessage(playerToMove+" could not be found on the"
+										+ " server.");
 							}
 							playerToMove = "";
 						}
@@ -63,13 +69,12 @@ public class Move {
 				sender.sendMessage(args[1] + " is not in the library!");
 			}
 
-
+			// close file stream
 			try {
 				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 
 			return true;
 
