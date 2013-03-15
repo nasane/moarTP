@@ -34,7 +34,7 @@ public class Unclaim {
 			String   s   = sender.toString().substring(17,sender.toString().length()-1);
 			String[] c_a = c.split("\\s");
 			c = c_a[2];
-			if (c.equals(s)) isCreator = true;
+                        isCreator = c.equals(s);
 		} else {
 			sender.sendMessage(args[0]+" either doesn't exist in the library or was made"
 					+ " with an ancient version of the moarTP plugin!");
