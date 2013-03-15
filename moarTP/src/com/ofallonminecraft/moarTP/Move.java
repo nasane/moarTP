@@ -44,7 +44,14 @@ public class Move {
 
 				// move each comma-separated player to the location
 				// TODO: use split() instead of going char-by-char
-				String playerToMove = "";
+
+                                String[] playersToMove = args[0].split(",");
+                                for (String playerToMove : playersToMove) {
+                                        if (Bukkit.getServer().getPlayer(playerToMove)!=null && Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
+// finish this thought!
+
+				/*
+                                String playerToMove = "";
 				for (int i=0; i <= args[0].length(); i++){
 					char c = ',';
 					if (i!=args[0].length()) c = args[0].charAt(i);      
@@ -65,6 +72,7 @@ public class Move {
 						}
 					}
 				}	
+                                */
 			} else {
 				sender.sendMessage(args[1] + " is not in the library!");
 			}
