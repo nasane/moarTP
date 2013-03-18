@@ -64,7 +64,6 @@ public class Move {
 			}
 
 			return true;
-
 			// ----- END MOVE ----- //
 		}
 
