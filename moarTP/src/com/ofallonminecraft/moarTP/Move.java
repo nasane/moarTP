@@ -17,8 +17,6 @@ public class Move {
 			e.printStackTrace();
 		}
 
-
-
 		// check user permissions
 		if (sender.hasPermission("moarTP.move")) {
 
@@ -43,36 +41,17 @@ public class Move {
 						toGoTo.getBlockX(), toGoTo.getBlockY(), toGoTo.getBlockZ());
 
 				// move each comma-separated player to the location
-				// TODO: use split() instead of going char-by-char
-
-                                String[] playersToMove = args[0].split(",");
-                                for (String playerToMove : playersToMove) {
-                                        if (Bukkit.getServer().getPlayer(playerToMove)!=null && Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
-// finish this thought!
-
-				/*
-                                String playerToMove = "";
-				for (int i=0; i <= args[0].length(); i++){
-					char c = ',';
-					if (i!=args[0].length()) c = args[0].charAt(i);      
-					if (c!=',') {
-						playerToMove += c;
+				String[] playersToMove = args[0].split(",");
+				for (String playerToMove : playersToMove) {
+					if (Bukkit.getServer().getPlayer(playerToMove)!=null && 
+							Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
+						Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
+						sender.sendMessage("Successfully teleported " + playerToMove
+								+ " to "+args[1].toLowerCase()+'.');
 					} else {
-						if (playerToMove != "") {
-							if (Bukkit.getServer().getPlayer(playerToMove)!=null && 
-									Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
-								Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo2);
-								sender.sendMessage("Successfully teleported " + playerToMove 
-										+ " to "+args[1].toLowerCase()+'.');
-							} else {
-								sender.sendMessage(playerToMove+" could not be found on the"
-										+ " server.");
-							}
-							playerToMove = "";
-						}
+						sender.sendMessage(playerToMove+" could not be found on the server.");
 					}
-				}	
-                                */
+				}
 			} else {
 				sender.sendMessage(args[1] + " is not in the library!");
 			}
