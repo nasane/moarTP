@@ -1,6 +1,6 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.41
+version: 0.50
 
 commands:
   unclaim:
@@ -9,8 +9,8 @@ commands:
     permission: moarTP.unclaim
     permission-message: You must be an op or the creator of the location to use this command.
   view:
-    description: View all locations in the system.
-    usage: /view
+    description: View all locations or locations created by a certain player.
+    usage: /view (player)
     permission: moarTP.view
     permission-message: You should have permission to use this command.
   tpto:

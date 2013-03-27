@@ -13,35 +13,41 @@ public class View {
 	public static boolean view(CommandSender sender, String[] args) {
 
 		// load locations file
-		Map<String, MTLocation> locations = null;
+		Map<String, MTLocation>   locations = null;
+		Map<String, List<String>> creators  = null;  // TODO: init in moarTP.java
 		try {
 			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
+			creators  = SLAPI.load("plugins/moarTP/moarTP_creators.bin");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// check number of arguments
-		if (args.length > 0) {
-			sender.sendMessage("This command doesn't take arguments.");
+		if (args.length > 1) {
+			sender.sendMessage("Please choose one player name.");
 			return false;
 		}
 
-
 		// ----- VIEW ----- //
 
-		Set<String>  viewLocs   = locations.keySet();    // set of locations
-		List<String> sortedLocs = new ArrayList<String>(viewLocs);  // list of locs
-		if (sortedLocs.size()>0) {
-			// display all locations to player			
-			Collections.sort(sortedLocs);
-			Iterator<String> i = sortedLocs.iterator();
-			String toView = i.next();
-			while (i.hasNext()) {
-				toView += ", " + i.next();
-			}
-			sender.sendMessage(toView);
+		if (args.length == 1) {
+			String creator = args[0].toLowerCase();
+			// TODO: display all the creator's locs here (and error checking)
 		} else {
-			sender.sendMessage("No locations claimed yet. Claim one with /claim <location>");
+			Set<String>  viewLocs   = locations.keySet();  // set of locations
+			List<String> sortedLocs = new ArrayList<String>(viewLocs);  // list of locs
+			if (sortedLocs.size()>0) {
+				// display all locations to player			
+				Collections.sort(sortedLocs);
+				Iterator<String> i = sortedLocs.iterator();
+				String toView = i.next();
+				while (i.hasNext()) {
+					toView += ", " + i.next();
+				}
+				sender.sendMessage(toView);
+			} else {
+				sender.sendMessage("No locations claimed yet. Claim one with /claim <location>");
+			}
 		}
 
 		// close file stream
