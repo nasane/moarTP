@@ -28,6 +28,7 @@ public class Unclaim {
 		}
 
 		// check if user is the creator of the location
+		// TODO: use creators map instead
 		boolean isCreator = false;
 		if (info.get(args[0].toLowerCase()) != null) {
 			String   c   = info.get(args[0].toLowerCase());
