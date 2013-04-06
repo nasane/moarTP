@@ -2,6 +2,7 @@ package com.ofallonminecraft.moarTP;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,11 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class moarTP extends JavaPlugin
 {
 
-
 	// ---------- INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
-	public static Map<String, MTLocation> locations = new HashMap<String, MTLocation>();
-	public static Map<String, String>     info      = new HashMap<String, String>();
-	public static Map<String, String>     homes     = new HashMap<String, String>();
+	public static Map<String, MTLocation>   locations = new HashMap<String, MTLocation>();
+	public static Map<String, String>       info      = new HashMap<String, String>();
+	public static Map<String, String>       homes     = new HashMap<String, String>();
+	public static Map<String, List<String>> creators  = new HashMap<String, List<String>>();
 	// ---------- END INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
 
 
@@ -38,14 +39,21 @@ public class moarTP extends JavaPlugin
 					new File("plugins/moarTP/moarTP_homes.bin").createNewFile();
 					SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
 				}
+				if (!(new File("plugins/moarTP/moarTP_creators.bin").exists())) {
+					new File("plugins/moarTP/moarTP_creators.bin").createNewFile();
+					SLAPI.save(creators, "plugins/moarTP/moarTP_creators.bin");
+					InitializeCreators.initializeCreators();
+				}
 			} else {
 				new File("plugins/moarTP").mkdir();
 				new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
 				new File("plugins/moarTP/moarTP_info.bin").createNewFile();
 				new File("plugins/moarTP/moarTP_homes.bin").createNewFile();
+				new File("plugins/moarTP/moarTP_creators.bin").createNewFile();
 				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
 				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
 				SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
+				SLAPI.save(creators, "plugins/moarTP/moarTP_creators.bin");
 			}
 			getLogger().info("moarTP has been enabled");
 		}

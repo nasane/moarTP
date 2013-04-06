@@ -79,6 +79,7 @@ public class Claim {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				// TODO: save creator info
 				player.sendMessage(args[0]+" successfully saved to library.");
 			}
 

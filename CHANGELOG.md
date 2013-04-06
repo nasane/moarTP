@@ -1,3 +1,7 @@
+### v0.50
+  -/view now has the ability to display locations made by a certain player.   
+  -Optimized throughout.   
+
 ### v0.41
   -/unclaim now allows location creators to remove their locations.   
   -/view now displays a nice message instead of an error when there are no locations.   

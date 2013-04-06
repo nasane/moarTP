@@ -1,4 +1,4 @@
-# moarTP v0.41
+# moarTP v0.50
 
 Author: Nathan Bossart  
 Website: <http://ofallonminecraft.com/>  
@@ -14,7 +14,7 @@ The 8 commands added by this plugin are:
     /tpto    [location]                              : teleport to a custom location
     /claim   [location] (["description"])    	     : define a custom location (where you're standing)
     /unclaim [location]                              : remove a custom location
-    /view                                            : view all locations in the system
+    /view    (player)                                : view all locations (or locations made by a player)
     /about   [location]               	      	     : view location information
     /move [player1(,player2,player3,...)] [location] : teleport other player(s) to a custom location
     /sethome [location]                              : set your personal home location

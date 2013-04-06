@@ -12,9 +12,9 @@ public class View {
 
 	public static boolean view(CommandSender sender, String[] args) {
 
-		// load locations file
+		// load necessary files
 		Map<String, MTLocation>   locations = null;
-		Map<String, List<String>> creators  = null;  // TODO: init in moarTP.java
+		Map<String, List<String>> creators  = null;
 		try {
 			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
 			creators  = SLAPI.load("plugins/moarTP/moarTP_creators.bin");
@@ -33,6 +33,7 @@ public class View {
 		if (args.length == 1) {
 			String creator = args[0].toLowerCase();
 			// TODO: display all the creator's locs here (and error checking)
+			// NOTE: this entire section can be refactored
 		} else {
 			Set<String>  viewLocs   = locations.keySet();  // set of locations
 			List<String> sortedLocs = new ArrayList<String>(viewLocs);  // list of locs

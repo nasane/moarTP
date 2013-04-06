@@ -52,6 +52,7 @@ public class Unclaim {
 					// delete info
 					info.remove(args[0].toLowerCase());
 				}
+				// TODO: update creator info
 				sender.sendMessage(args[0]+" was successfully deleted from the library.");
 			}
 
