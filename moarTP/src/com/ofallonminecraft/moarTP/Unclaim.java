@@ -8,11 +8,13 @@ public class Unclaim {
 	public static boolean unclaim(CommandSender sender, String[] args) {
 
 		// load locs and info files
+		Map<String, String>     creators  = null;
 		Map<String, MTLocation> locations = null;
 		Map<String, String>     info      = null;
 		try {
+			creators  = SLAPI.load("plugins/moarTP/moarTP_creators.bin");
 			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
-			info = SLAPI.load("plugins/moarTP/moarTP_info.bin");
+			info      = SLAPI.load("plugins/moarTP/moarTP_info.bin");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -28,14 +30,9 @@ public class Unclaim {
 		}
 
 		// check if user is the creator of the location
-		// TODO: use creators map instead
 		boolean isCreator = false;
 		if (info.get(args[0].toLowerCase()) != null) {
-			String   c   = info.get(args[0].toLowerCase());
-			String   s   = sender.toString().substring(17,sender.toString().length()-1);
-			String[] c_a = c.split("\\s");
-			c = c_a[2];
-                        isCreator = c.equals(s);
+			isCreator = (creators.get(args[0].toLowerCase()).equals(sender.toString()));
 		} else {
 			sender.sendMessage(args[0]+" either doesn't exist in the library or was made"
 					+ " with an ancient version of the moarTP plugin!");
