@@ -76,58 +76,39 @@ public class moarTP extends JavaPlugin
 
 		// ----- Functions that do not require user to be a player ----- //
 
-		// About
 		if (cmd.getName().equalsIgnoreCase("about")) {
 			return About.about(sender, args);
-		}
-
-		// Move
-		if (cmd.getName().equalsIgnoreCase("move")) {
+		} else if (cmd.getName().equalsIgnoreCase("move")) {
 			return Move.move(sender, args);
-		}
-
-		// Unclaim
-		if (cmd.getName().equalsIgnoreCase("unclaim")) {
+		} else if (cmd.getName().equalsIgnoreCase("unclaim")) {
 			return Unclaim.unclaim(sender, args);
-		}
-
-		// View
-		if ((cmd.getName().equalsIgnoreCase("view")) && (sender.hasPermission("moarTP.view"))) {
+		} else if (cmd.getName().equalsIgnoreCase("view")) {
 			return View.view(sender, args);
-		}
+		} else
 
 
-		// ----- Functions that do require the user to be a player ----- //
+			// ----- Functions that do require the user to be a player ----- //
 
-		// check if user is a player
-		if (sender instanceof Player) {
-			Player player = (Player) sender;
+			// check if user is a player
+			if (sender instanceof Player) {
+				Player player = (Player) sender;
 
-			// Tpto
-			if (cmd.getName().equalsIgnoreCase("tpto")) {
-				return Tpto.tpto(sender, args, player);
+				// Tpto
+				if (cmd.getName().equalsIgnoreCase("tpto")) {
+					return Tpto.tpto(sender, args, player);
+				} else if (cmd.getName().equalsIgnoreCase("claim")) {
+					return Claim.claim(sender, args, player);
+				} else if (cmd.getName().equalsIgnoreCase("sethome")) {
+					return SetHome.sethome(sender, args, player);
+				} else if (cmd.getName().equalsIgnoreCase("gohome")) {
+					return GoHome.gohome(sender, args, player);
+				}
+
+			} else {
+				// if user is not a player, present an error message
+				sender.sendMessage("You must be a player!");
+				return false;
 			}
-
-			// Claim
-			if (cmd.getName().equalsIgnoreCase("claim")) {
-				return Claim.claim(sender, args, player);
-			}
-
-			// SetHome
-			if (cmd.getName().equalsIgnoreCase("sethome")) {
-				return SetHome.sethome(sender, args, player);
-			}
-
-			// GoHome
-			if (cmd.getName().equalsIgnoreCase("gohome")) {
-				return GoHome.gohome(sender, args, player);
-			}
-
-		} else {
-			// if user is not a player, present an error message
-			sender.sendMessage("You must be a player!");
-			return false;
-		}
 		return false;
 	}
 	// --------- END HANDLE THE COMMANDS ---------- //

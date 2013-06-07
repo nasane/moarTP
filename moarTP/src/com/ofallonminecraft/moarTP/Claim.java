@@ -2,7 +2,10 @@ package com.ofallonminecraft.moarTP;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,11 +16,13 @@ public class Claim {
 	public static boolean claim(CommandSender sender, String[] args, Player player) {
 
 		// open file of locs and associated location info
-		Map<String, MTLocation> locations = null;
-		Map<String, String>     info      = null;
+		Map<String, MTLocation>   locations = null;
+		Map<String, String>       info      = null;
+		Map<String, List<String>> creators  = null;
 		try {
 			locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
 			info      = SLAPI.load("plugins/moarTP/moarTP_info.bin");
+			creators  = SLAPI.load("plugins/moarTP/moarTP_creators.bin");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,7 +84,19 @@ public class Claim {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				// TODO: save creator info
+				// save the creator info -- TODO: refactor this
+				if (creators.get(player.getDisplayName())!=null) {
+					List<String> theirList = creators.get(player.getDisplayName());
+					theirList.add(args[0].toLowerCase());
+					Collections.sort(theirList);
+					creators.remove(player.getDisplayName());
+					creators.put(player.getDisplayName(), theirList);
+				} else {
+					List<String> theirList = new ArrayList<String>();
+					theirList.add(args[0].toLowerCase());
+					creators.put(player.getDisplayName(), theirList);
+				}
+
 				player.sendMessage(args[0]+" successfully saved to library.");
 			}
 

@@ -29,7 +29,7 @@ public class About {
 			}
 
 			// ----- ABOUT ----- //
-			
+
 			// check that location is present in both locs and info files
 			if (locations.containsKey(args[0].toLowerCase())) {
 				if (info.containsKey(args[0].toLowerCase())) {

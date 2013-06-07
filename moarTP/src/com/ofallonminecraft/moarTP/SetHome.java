@@ -55,7 +55,7 @@ public class SetHome {
 			// save locs and homes files
 			try {
 				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
+				SLAPI.save(homes,     "plugins/moarTP/moarTP_homes.bin");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

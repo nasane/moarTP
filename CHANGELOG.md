@@ -1,6 +1,7 @@
 ### v0.50
   -/view now has the ability to display locations made by a certain player.   
-  -Optimized throughout.   
+  -Optimized throughout.  
+  -Migrated to an MIT license.  
 
 ### v0.41
   -/unclaim now allows location creators to remove their locations.   
