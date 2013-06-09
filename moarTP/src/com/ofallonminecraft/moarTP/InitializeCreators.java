@@ -8,6 +8,8 @@ import java.util.Set;
 
 public class InitializeCreators {
 
+	// TODO: fix this because it's BROKE!
+	
 	public static void initializeCreators() {
 
 		// load necessary files
