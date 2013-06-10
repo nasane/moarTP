@@ -5,6 +5,8 @@ import org.bukkit.command.CommandSender;
 
 public class About {
 
+	// TODO: display secret locs (password checked)
+	
 	public static boolean about(CommandSender sender, String[] args) {
 
 		// open file of locs and associated location info

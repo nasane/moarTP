@@ -23,6 +23,11 @@ commands:
     usage: /claim [location] (["description"])
     permission: moarTP.claim
     permission-message: You must be a player to use this command.
+  claimsecret:
+    description: Claim a secret location.
+    usage: /claimsecret [location] [password] (["description"])
+    permission: moarTP.claimsecret
+    permission-message: You must be a player to use this command.
   move:
     description: Move a player to a custom location.
     usage: /move [player1(,player2,player3,...)] [location]
@@ -52,6 +57,7 @@ permissions:
       moarTP.view: true
       moarTP.tpto: true
       moarTP.claim: true
+      moarTP.claimsecret: true
       moarTP.move: true
       moarTP.about: true
       moarTP.sethome: true
@@ -67,6 +73,9 @@ permissions:
     default: true
   moarTP.claim:
     description: Claim a new location.
+    default: true
+  moarTP.claimsecret:
+    description: Claim a secret location.
     default: true
   moarTP.move:
     description: Move a player to a custom location.

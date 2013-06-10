@@ -8,6 +8,8 @@ import org.bukkit.Location;
 
 public class Tpto {
 
+	// TODO: add in support for secret locs and prompting for a password
+	
 	public static boolean tpto(CommandSender sender, String[] args, Player player) {
 
 		// load locs file

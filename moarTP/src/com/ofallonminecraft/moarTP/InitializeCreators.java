@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class InitializeCreators {
-
-	// TODO: fix this because it's BROKE!
 	
 	public static void initializeCreators() {
 
@@ -31,7 +29,8 @@ public class InitializeCreators {
 			for (String loc : locs) {
 				if (info.get(loc)!=null) {
 					// get creator of location
-					String creator = (info.get(loc).split("\\s"))[2];
+					String[] linesOfInfo = info.get(loc).split("\n");
+					String creator = linesOfInfo[linesOfInfo.length-1].split("\\s")[2];
 
 					// get current list of their locations
 					List<String> theirLocs = null;

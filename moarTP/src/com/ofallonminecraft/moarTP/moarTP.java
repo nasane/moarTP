@@ -126,6 +126,8 @@ public class moarTP extends JavaPlugin
 					return SetHome.sethome(sender, args, player);
 				} else if (cmd.getName().equalsIgnoreCase("gohome")) {
 					return GoHome.gohome(sender, args, player);
+				} else if (cmd.getName().equalsIgnoreCase("claimsecret")) {
+					return ClaimSecret.claimSecret(sender, args, player);
 				}
 
 			} else {

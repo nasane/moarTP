@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 
 public class SetHome {
 
+	// TODO: handle secret locs; tell them they cannot set a secret loc as their home
+	
 	public static boolean sethome(CommandSender sender, String[] args, Player player) {
 		if (sender.hasPermission("moarTP.sethome")) {
 

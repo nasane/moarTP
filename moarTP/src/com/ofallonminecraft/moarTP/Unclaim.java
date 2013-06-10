@@ -10,6 +10,9 @@ public class Unclaim {
 
 	public static boolean unclaim(CommandSender sender, String[] args) {
 
+		// TODO: make people homeless if their home is unclaimed!
+		// TODO: handle secret locations
+		
 		// load locs and info files
 		Map<String, List<String>> creators  = null;
 		Map<String, MTLocation>   locations = null;

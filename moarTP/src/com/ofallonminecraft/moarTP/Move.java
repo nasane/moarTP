@@ -7,6 +7,8 @@ import org.bukkit.Location;
 
 public class Move {
 
+	// TODO: provide ability to move people to a secret loc if sender provides correct password
+	
 	public static boolean move(CommandSender sender, String[] args) {
 
 		// load locations file
