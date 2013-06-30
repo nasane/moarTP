@@ -1,8 +1,11 @@
 package com.ofallonminecraft.moarTP;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.sql.Connection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,131 +15,155 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class moarTP extends JavaPlugin
 {
 
-	// ---------- INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
-	public static Map<String, MTLocation>   locations  = new HashMap<String, MTLocation>();
-	public static Map<String, String>       info       = new HashMap<String, String>();
-	public static Map<String, String>       homes      = new HashMap<String, String>();
-	public static Map<String, List<String>> creators   = new HashMap<String, List<String>>();
-	public static Map<String, List<String>> secretLocs = new HashMap<String, List<String>>(); 
-	public double                           version    = 0.60;
-	// ---------- END INITIALIZE HASMAPS TO STORE LOCATIONS AND DESCRIPTIONS ---------- //
+	public String version = "0.60";
+	public static Map<String, String> metaData = new HashMap<String, String>();
+	public boolean enabled = false;
+	Connection c = null;
 
-
-
-	// ---------- MANAGE FILES WHEN ENABLING/DISABLING THE PLUGIN ---------- //
-
-	// on enable, ensure correct directory structure and plugin files
+	// on enable, ensure correct directory structure plugin files, and db connection
 	public void onEnable() {
 		try {
-			double oldVersion = 0.0;
-			if (new File("plugins/moarTP/moarTP_version.bin").exists()) {
-				oldVersion = SLAPI.load("plugins/moarTP/moarTP_version.bin");
-				// opportunity to fix anything to provide backwards compatibility
-				if (oldVersion<version) {}
-				SLAPI.save(version, "plugins/moarTP/moarTP_version.bin");
-			}
 			if (new File("plugins/moarTP/").exists()) {
-				if (!(new File("plugins/moarTP/moarTP_locs.bin").exists())) {
-					new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
-					SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				}
-				if (!(new File("plugins/moarTP/moarTP_info.bin").exists())) {
-					new File("plugins/moarTP/moarTP_info.bin").createNewFile();
-					SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-				}
-				if (!(new File("plugins/moarTP/moarTP_homes.bin").exists())) {
-					new File("plugins/moarTP/moarTP_homes.bin").createNewFile();
-					SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
-				}
-				boolean creatorsInitialized = false;
-				if (!(new File("plugins/moarTP/moarTP_creators.bin").exists())) {
-					new File("plugins/moarTP/moarTP_creators.bin").createNewFile();
-					SLAPI.save(creators, "plugins/moarTP/moarTP_creators.bin");
-					InitializeCreators.initializeCreators();
-					creatorsInitialized = true;
-				}
-				if (!(new File("plugins/moarTP/moarTP_version.bin").exists())) {
-					new File("plugins/moarTP/moarTP_version.bin").createNewFile();
-					SLAPI.save(version, "plugins/moarTP/moarTP_version.bin");
-					if (!creatorsInitialized) InitializeCreators.initializeCreators();
-				}
-				if (!(new File("plugins/moarTP/moarTP_secret.bin").exists())) {
-					new File("plugin/moarTP/moarTP_secret.bin").createNewFile();
-					SLAPI.save(secretLocs, "plugins/moarTP/moarTP_secret.bin");
+				if (new File("plugins/moarTP/moarTP_db.config").exists()) {
+					if (new File("plugins/moarTP/moarTP.bin").exists()) {
+						metaData = SLAPI.load("plugins/moarTP/moarTP.bin");
+						String oldVersion = metaData.get("version");
+						if (!oldVersion.equals(version)) {
+							// provide backwards and forward compatibility for future versions
+							metaData.remove("version");
+						}
+					} else {
+						boolean uploadSuccess = UploadToDB.uploadToDB(version);
+						if (uploadSuccess) getLogger().info("All moarTP locations have been moved "
+								+ "to the database provided.  You may delete all plugin files "
+								+ "for moarTP EXCEPT moarTP_db.config AND moarTP.bin.");
+						else getLogger().info("Something went horribly wrong when trying to "
+								+ "upload the moarTP locations to the database.  Double check "
+								+ "your moarTP_db.config file and try reloading again.");
+					}
+					metaData.put("version", version);
+					SLAPI.save(metaData, "plugins/moarTP/moarTP.bin");
+					String         hostName = null;
+					String         port     = null;
+					String         database = null;
+					String         user     = null;
+					String         pass     = null;
+					BufferedReader reader   = null;
+					String f = "";
+					try {
+						reader = new BufferedReader(new FileReader("plugins/moarTP/moarTP_db.config"));
+						String l = null;
+						while ((l=reader.readLine())!=null) f += l + "\n";
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					String[] flines = f.split("\n");
+					hostName = flines[0].split("\\s")[1];
+					port     = flines[1].split("\\s")[1];
+					database = flines[2].split("\\s")[1];
+					user     = flines[3].split("\\s")[1];
+					pass     = flines[4].split("\\s")[1];
+
+					MySQL MySQL = new MySQL(hostName, port, database, user, pass);
+					c = MySQL.open();
+					getLogger().info("moarTP has been enabled");
+					enabled = true;
+				} else {
+					new File("plugins/moarTP/moarTP_db.config").createNewFile();
+					FileWriter writer = null;
+					try {
+						writer = new FileWriter("plugins/moarTP/moarTP_db.config");
+						writer.write("Host: \nPort: \nDatabase: \nUsername: \nPassword: \n");
+					} finally {
+						if (writer!=null) {
+							writer.close();
+						}
+					}
+					getLogger().info("For moarTP to work, please insert database "
+							+ "credentials into the plugins/moarTP/moarTP_db.config "
+							+ "file.  Then reload the server.");
 				}
 			} else {
 				new File("plugins/moarTP").mkdir();
-				new File("plugins/moarTP/moarTP_locs.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_info.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_homes.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_creators.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_version.bin").createNewFile();
-				new File("plugins/moarTP/moarTP_secret.bin").createNewFile();
-				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-				SLAPI.save(homes, "plugins/moarTP/moarTP_homes.bin");
-				SLAPI.save(creators, "plugins/moarTP/moarTP_creators.bin");
-				SLAPI.save(version, "plugins/moarTP/moarTP_version.bin");
-				SLAPI.save(secretLocs, "plugins/moarTP/moarTP_secret.bin");
+				new File("plugins/moarTP/moarTP_db.config").createNewFile();
+				FileWriter writer = null;
+				try {
+					writer = new FileWriter("plugins/moarTP/moarTP_db.config");
+					writer.write("Host: \nPort: \nDatabase: \nUsername: \nPassword: \n");
+				} finally {
+					if (writer!=null) {
+						writer.close();
+					}
+				}				
+				getLogger().info("For moarTP to work, please insert database "
+						+ "credentials into the plugins/moarTP/moarTP_db.config "
+						+ "file.  Then reload the server.");
 			}
-			getLogger().info("moarTP has been enabled");
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	// on disable, print a message
 	public void onDisable() {
+		try {
+			c.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		getLogger().info("moarTP hs been disabled.");
 	}
-	// ---------- END MANAGE FILES WHEN ENABLING/DISABLING THE PLUGIN ---------- //
-
 
 
 	// ---------- HANDLE THE COMMANDS ---------- //
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) 
 	{
 
-		// ----- Functions that do not require user to be a player ----- //
+		if (enabled) {
 
-		if (cmd.getName().equalsIgnoreCase("about")) {
-			return About.about(sender, args);
-		} else if (cmd.getName().equalsIgnoreCase("move")) {
-			return Move.move(sender, args);
-		} else if (cmd.getName().equalsIgnoreCase("unclaim")) {
-			return Unclaim.unclaim(sender, args);
-		} else if (cmd.getName().equalsIgnoreCase("view")) {
-			return View.view(sender, args);
-		} else
+			// ----- Functions that do not require user to be a player ----- //
+
+			if (cmd.getName().equalsIgnoreCase("about")) {
+				return About.about(sender, args, c);
+			} else if (cmd.getName().equalsIgnoreCase("move")) {
+				return Move.move(sender, args, c);
+			} else if (cmd.getName().equalsIgnoreCase("unclaim")) {
+				return Unclaim.unclaim(sender, args, c);
+			} else if (cmd.getName().equalsIgnoreCase("view")) {
+				return View.view(sender, args, c);
+			} else
 
 
-			// ----- Functions that do require the user to be a player ----- //
+				// ----- Functions that do require the user to be a player ----- //
 
-			// check if user is a player
-			if (sender instanceof Player) {
-				Player player = (Player) sender;
+				// check if user is a player
+				if (sender instanceof Player) {
+					Player player = (Player) sender;
 
-				// Tpto
-				if (cmd.getName().equalsIgnoreCase("tpto")) {
-					return Tpto.tpto(sender, args, player);
-				} else if (cmd.getName().equalsIgnoreCase("claim")) {
-					return Claim.claim(sender, args, player);
-				} else if (cmd.getName().equalsIgnoreCase("sethome")) {
-					return SetHome.sethome(sender, args, player);
-				} else if (cmd.getName().equalsIgnoreCase("gohome")) {
-					return GoHome.gohome(sender, args, player);
-				} else if (cmd.getName().equalsIgnoreCase("claimsecret")) {
-					return ClaimSecret.claimSecret(sender, args, player);
+					// Tpto
+					if (cmd.getName().equalsIgnoreCase("tpto")) {
+						return Tpto.tpto(sender, args, player, c);
+					} else if (cmd.getName().equalsIgnoreCase("claim")) {
+						return Claim.claim(sender, args, player, version, c);
+					} else if (cmd.getName().equalsIgnoreCase("sethome")) {
+						return SetHome.sethome(sender, args, player, c);
+					} else if (cmd.getName().equalsIgnoreCase("gohome")) {
+						return GoHome.gohome(sender, args, player, c);
+					} else if (cmd.getName().equalsIgnoreCase("claimsecret")) {
+						player.sendMessage("Sorry, this function is still being implemented!");
+						return true;
+						//return ClaimSecret.claimSecret(sender, args, player, c);
+					}
+
+				} else {
+					// if user is not a player, present an error message
+					sender.sendMessage("You must be a player!");
+					return false;
 				}
+			return false;
+		}
+		// --------- END HANDLE THE COMMANDS ---------- //
 
-			} else {
-				// if user is not a player, present an error message
-				sender.sendMessage("You must be a player!");
-				return false;
-			}
 		return false;
 	}
-	// --------- END HANDLE THE COMMANDS ---------- //
-
 }

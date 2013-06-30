@@ -1,5 +1,6 @@
 package com.ofallonminecraft.moarTP;
 
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class ClaimSecret {
 
 	// TODO: find a way to prevent the entered password from showing up on the server logs
 	
-	public static boolean claimSecret(CommandSender sender, String[] args, Player player) {
+	public static boolean claimSecret(CommandSender sender, String[] args, Player player, Connection c) {
 
 		// open file of locs and associated location info
 		Map<String, MTLocation>   locations  = null;

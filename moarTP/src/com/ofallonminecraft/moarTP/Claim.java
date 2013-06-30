@@ -1,33 +1,18 @@
 package com.ofallonminecraft.moarTP;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 
 public class Claim {
-	
-	public static boolean claim(CommandSender sender, String[] args, Player player) {
 
-		// open file of locs and associated location info
-		Map<String, MTLocation>   locations  = null;
-		Map<String, String>       info       = null;
-		Map<String, List<String>> creators   = null;
-		Map<String, List<String>> secretLocs = null;
-		try {
-			locations  = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
-			info       = SLAPI.load("plugins/moarTP/moarTP_info.bin");
-			creators   = SLAPI.load("plugins/moarTP/moarTP_creators.bin");
-			secretLocs = SLAPI.load("plugins/moarTP/moarTP_secret.bin");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static boolean claim(CommandSender sender, String[] args, Player player, String version, Connection c) {
 
 
 		// check user permissions
@@ -49,85 +34,53 @@ public class Claim {
 
 			// ----- CLAIM ----- //
 
-			// check that the location name isn't taken
-			if (locations.containsKey(args[0].toLowerCase()) || secretLocs.containsKey(args[0].toLowerCase())) {
-				player.sendMessage(args[0]+" is already in the library!");
-			}
-			else {
-				// save the location
-				Location loc = player.getLocation();
-				MTLocation toSave = MTLocation.getMTLocationFromLocation(loc);
-				locations.put(args[0].toLowerCase(), toSave);
-				try {
-					SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
-				Date date = new Date();
-				String timeStamp = dateFormat.format(date);
-				String locInfo = "Created by "+player.getDisplayName()+" on "+timeStamp+".";
-
-				// format the description
-				if (args.length>1) {
-					String description = "";
-					for (int i=1; i<args.length; ++i) {
-						description += args[i] + ' ';
-					}
-					description = description.substring(1,description.length()-2 );
-					info.put(args[0].toLowerCase(), description + "\n" + locInfo);
-				} else {
-					info.put(args[0].toLowerCase(), locInfo);
-				}
-
-				// save the location info
-				try {
-					SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				// save the creator info -- TODO: refactor this
-				if (creators.get(player.getDisplayName())!=null) {
-					List<String> theirList = creators.get(player.getDisplayName());
-					theirList.add(args[0].toLowerCase());
-					Collections.sort(theirList);
-					creators.remove(player.getDisplayName());
-					creators.put(player.getDisplayName(), theirList);
-				} else {
-					List<String> theirList = new ArrayList<String>();
-					theirList.add(args[0].toLowerCase());
-					creators.put(player.getDisplayName(), theirList);
-				}
-
-				player.sendMessage(args[0]+" successfully saved to library.");
-			}
-
-			// save the files
 			try {
-				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-				SLAPI.save(creators, "plugins/moarTP/moarTP_creators.bin");
-				SLAPI.save(secretLocs, "plugins/moarTP/moarTP_secret.bin");
+				PreparedStatement s = c.prepareStatement("select location from moarTP where location=?;");
+				s.setString(1, args[0].toLowerCase());
+				ResultSet rs = s.executeQuery();
+				if (rs.next()) {
+					player.sendMessage(args[0].toLowerCase()+" is already in the library!");
+				} else {
+					Location loc = player.getLocation();
+					String creator = player.getDisplayName();
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Date date = new Date();
+					String timeStamp = dateFormat.format(date);
+					String description = null;
+					if (args.length>1) {
+						description = "";
+						for (int i=1; i<args.length; ++i) {
+							description += args[i] + ' ';
+						}
+						description = description.substring(1,description.length()-2 );
+					}
+					String template = "insert into moarTP (location, creationTime, creator, x, y, z, "
+							+ "world, info, secret, version) values(?, ?, ?, ?, ?, ?, ?, ?, 'N', ?);";
+					PreparedStatement insertion = c.prepareStatement(template);
+					insertion.setString(1, args[0].toLowerCase());
+					insertion.setInt(4, loc.getBlockX());
+					insertion.setInt(5, loc.getBlockY());
+					insertion.setInt(6, loc.getBlockZ());
+					insertion.setString(7, loc.getWorld().getName());
+					insertion.setString(9, version);
+					insertion.setString(3, creator);
+					insertion.setString(2, timeStamp);
+					if (description!=null) {
+						insertion.setString(8, description);
+					} else {
+						insertion.setNull(8, 12);
+					}
+					insertion.executeUpdate();
+					player.sendMessage(args[0]+" successfully saved to library.");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			return true;
-
 			// ----- END CLAIM ----- //
 		}
 
 		else {
-			// close file stream regardless
-			try {
-				SLAPI.save(locations, "plugins/moarTP/moarTP_locs.bin");
-				SLAPI.save(info, "plugins/moarTP/moarTP_info.bin");
-				SLAPI.save(creators, "plugins/moarTP/moarTP_creators.bin");
-				SLAPI.save(secretLocs, "plugins/moarTP/moarTP_secret.bin");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 			// if user doesn't have permission, present an error message
 			sender.sendMessage("You don't have permission to do this!");
 			return false;	
