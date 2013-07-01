@@ -14,7 +14,6 @@ public class Claim {
 
 	public static boolean claim(CommandSender sender, String[] args, Player player, String version, Connection c) {
 
-
 		// check user permissions
 		if (sender.hasPermission("moarTP.claim")) {
 
@@ -31,9 +30,7 @@ public class Claim {
 				} 
 			}
 
-
 			// ----- CLAIM ----- //
-
 			try {
 				PreparedStatement s = c.prepareStatement("select location from moarTP where location=?;");
 				s.setString(1, args[0].toLowerCase());

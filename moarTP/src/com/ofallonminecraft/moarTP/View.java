@@ -7,8 +7,6 @@ import org.bukkit.command.CommandSender;
 
 public class View {
 
-	// TODO: display secret locs as well (just the names!)
-
 	public static boolean view(CommandSender sender, String[] args, Connection c) {
 
 		// check user permissions

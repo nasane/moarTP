@@ -12,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+// TODO: update plugin.yml and online docs!
+
 public class moarTP extends JavaPlugin
 {
 
@@ -25,49 +27,59 @@ public class moarTP extends JavaPlugin
 		try {
 			if (new File("plugins/moarTP/").exists()) {
 				if (new File("plugins/moarTP/moarTP_db.config").exists()) {
+					boolean skipConnect = false;
 					if (new File("plugins/moarTP/moarTP.bin").exists()) {
 						metaData = SLAPI.load("plugins/moarTP/moarTP.bin");
 						String oldVersion = metaData.get("version");
 						if (!oldVersion.equals(version)) {
 							// provide backwards and forward compatibility for future versions
 							metaData.remove("version");
+							metaData.put("version", version);
 						}
+						SLAPI.save(metaData, "plugins/moarTP/moarTP.bin");
 					} else {
 						boolean uploadSuccess = UploadToDB.uploadToDB(version);
-						if (uploadSuccess) getLogger().info("All moarTP locations have been moved "
-								+ "to the database provided.  You may delete all plugin files "
-								+ "for moarTP EXCEPT moarTP_db.config AND moarTP.bin.");
-						else getLogger().info("Something went horribly wrong when trying to "
-								+ "upload the moarTP locations to the database.  Double check "
-								+ "your moarTP_db.config file and try reloading again.");
+						if (uploadSuccess) {
+							getLogger().info("All moarTP locations have been moved "
+									+ "to the database provided.  You may delete all plugin files "
+									+ "for moarTP EXCEPT moarTP_db.config AND moarTP.bin.");
+							metaData.put("version", version);
+							SLAPI.save(metaData, "plugins/moarTP/moarTP.bin");
+						}
+						else {
+							getLogger().info("Something went horribly wrong when trying to "
+									+ "upload the moarTP locations to the database.  Double check "
+									+ "your moarTP_db.config file and try reloading again.");
+							skipConnect = true;
+						}
 					}
-					metaData.put("version", version);
-					SLAPI.save(metaData, "plugins/moarTP/moarTP.bin");
-					String         hostName = null;
-					String         port     = null;
-					String         database = null;
-					String         user     = null;
-					String         pass     = null;
-					BufferedReader reader   = null;
-					String f = "";
-					try {
-						reader = new BufferedReader(new FileReader("plugins/moarTP/moarTP_db.config"));
-						String l = null;
-						while ((l=reader.readLine())!=null) f += l + "\n";
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					String[] flines = f.split("\n");
-					hostName = flines[0].split("\\s")[1];
-					port     = flines[1].split("\\s")[1];
-					database = flines[2].split("\\s")[1];
-					user     = flines[3].split("\\s")[1];
-					pass     = flines[4].split("\\s")[1];
+					if (!skipConnect) {
+						String         hostName = null;
+						String         port     = null;
+						String         database = null;
+						String         user     = null;
+						String         pass     = null;
+						BufferedReader reader   = null;
+						String f = "";
+						try {
+							reader = new BufferedReader(new FileReader("plugins/moarTP/moarTP_db.config"));
+							String l = null;
+							while ((l=reader.readLine())!=null) f += l + "\n";
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						String[] flines = f.split("\n");
+						hostName = flines[0].split("\\s")[1];
+						port     = flines[1].split("\\s")[1];
+						database = flines[2].split("\\s")[1];
+						user     = flines[3].split("\\s")[1];
+						pass     = flines[4].split("\\s")[1];
 
-					MySQL MySQL = new MySQL(hostName, port, database, user, pass);
-					c = MySQL.open();
-					getLogger().info("moarTP has been enabled");
-					enabled = true;
+						MySQL MySQL = new MySQL(hostName, port, database, user, pass);
+						c = MySQL.open();
+						getLogger().info("moarTP has been enabled");
+						enabled = true;
+					}
 				} else {
 					new File("plugins/moarTP/moarTP_db.config").createNewFile();
 					FileWriter writer = null;
@@ -150,9 +162,7 @@ public class moarTP extends JavaPlugin
 					} else if (cmd.getName().equalsIgnoreCase("gohome")) {
 						return GoHome.gohome(sender, args, player, c);
 					} else if (cmd.getName().equalsIgnoreCase("claimsecret")) {
-						player.sendMessage("Sorry, this function is still being implemented!");
-						return true;
-						//return ClaimSecret.claimSecret(sender, args, player, c);
+						return ClaimSecret.claimSecret(sender, args, player, c, version);
 					}
 
 				} else {

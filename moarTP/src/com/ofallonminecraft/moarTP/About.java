@@ -7,8 +7,6 @@ import org.bukkit.command.CommandSender;
 
 public class About {
 
-	// TODO: display secret locs (password checked)
-
 	public static boolean about(CommandSender sender, String[] args, Connection c) {
 
 		// check permissions and number of args

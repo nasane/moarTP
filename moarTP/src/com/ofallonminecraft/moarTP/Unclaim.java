@@ -9,7 +9,6 @@ public class Unclaim {
 
 	public static boolean unclaim(CommandSender sender, String[] args, Connection c) {
 
-		// TODO: handle secret locations
 		// TODO: combine two select queries?
 
 		// check number of arguments

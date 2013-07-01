@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 public class SetHome {
 
-	// TODO: handle secret locs; tell them they cannot set a secret loc as their home
 	// TODO: fix result set closure issues
 
 	public static boolean sethome(CommandSender sender, String[] args, Player player, Connection c) {
@@ -26,17 +25,21 @@ public class SetHome {
 
 			// ----- SETHOME ----- //
 			try {
-				PreparedStatement s = c.prepareStatement("select home from moarTP where location=?;");
+				PreparedStatement s = c.prepareStatement("select home,secret from moarTP where location=?;");
 				s.setString(1, args[0].toLowerCase());
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" could not be found in the library!"
 							+ "  Choose an existing location to be your home.");
 				} else {
+					if (rs.getString(2).equals("Y")) {
+						player.sendMessage("Sorry, you cannot set a secret location as your home.");
+						return true;
+					}
 					String oldHomeList = rs.getString(1);
-					PreparedStatement s2 = c.prepareStatement("select home,location from moarTP where home LIKE ?;");
+					PreparedStatement s2 = c.prepareStatement("select home,location,secret from moarTP where home LIKE ?;");
 					s2.setString(1, "%"+player.getDisplayName()+"%");
-					ResultSet rs2 = s.executeQuery();
+					ResultSet rs2 = s2.executeQuery();
 					if (rs2.next()) {
 						boolean playerVerified = false;
 						boolean hasNext = true;

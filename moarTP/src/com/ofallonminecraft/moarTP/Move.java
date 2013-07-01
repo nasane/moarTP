@@ -9,15 +9,13 @@ import org.bukkit.Location;
 
 public class Move {
 
-	// TODO: provide ability to move people to a secret loc if sender provides correct password!!!
-
 	public static boolean move(CommandSender sender, String[] args, Connection c) {
 
 		// check user permissions
 		if (sender.hasPermission("moarTP.move")) {
 
 			// check number of arguments
-			if (args.length > 2) {
+			if (args.length > 3) {
 				sender.sendMessage("Too many arguments!");
 				return false;
 			}
@@ -28,13 +26,18 @@ public class Move {
 
 			// ----- MOVE ----- //
 			try {
-				PreparedStatement s = c.prepareStatement("select x,y,z,world from moarTP where location=?;");
+				PreparedStatement s = c.prepareStatement("select x,y,z,world,secret from moarTP where location=?;");
 				s.setString(1, args[1].toLowerCase());
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) sender.sendMessage(args[1].toLowerCase()+" is not in the library!");
 				else {
-					Location toGoTo = new Location(Bukkit.getServer().getWorld(rs.getString(4)),
-							rs.getInt(1),rs.getInt(2),rs.getInt(3));
+					Location toGoTo = null;
+					if (rs.getString(4).equals("Y")) {
+						// TODO: decrypt location (or don't if they fail)
+					} else {
+						toGoTo = new Location(Bukkit.getServer().getWorld(rs.getString(4)),
+								rs.getInt(1),rs.getInt(2),rs.getInt(3));
+					}
 					String[] playersToMove = args[0].split(",");
 					for (String playerToMove : playersToMove) {
 						if (Bukkit.getServer().getPlayer(playerToMove)!=null &&
