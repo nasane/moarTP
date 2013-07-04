@@ -24,4 +24,4 @@ The 8 commands added by this plugin are:
 
 # Instructions for use:
 
-The newest version of the plugin requires a database to operate.  If you have existing locations on your server, they will be automatically sent to the database upon configuration.  Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  Open moarTP_db.config, insert database connection details, and save the file.  Then, reload the server once more.  You should be ready to go!
+The newest version of the plugin requires a MySQL database to operate.  If you have existing locations on your server, they will be automatically sent to the database upon configuration.  Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  Open moarTP_db.config, insert database connection details, and save the file.  Then, reload the server once more.  You should be ready to go!
