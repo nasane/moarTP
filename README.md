@@ -13,7 +13,7 @@ The 8 commands added by this plugin are:
 
     /tpto        [location] (password)                          : teleport to a custom location
     /claim       [location] (["description"])    	            : define a custom location (where you're standing)
-    /claimsecret [location] (password)                          : define a custom location encrypted with a passphrase
+    /claimsecret [location] (password) (["description"])        : define a custom location encrypted with a passphrase
     /unclaim     [location]                                     : remove a custom location
     /view        (player)                                       : view all locations (or locations made by a player)
     /about       [location]               	      	            : view location information
