@@ -33,7 +33,35 @@ public class Move {
 				else {
 					Location toGoTo = null;
 					if (rs.getString(4).equals("Y")) {
-						// TODO: decrypt location (or don't if they fail)
+						if (args.length<3) {
+							sender.sendMessage(args[1].toLowerCase()+" is secret! A password is required for access.");
+							return false;
+						} else {
+							s = c.prepareStatement("select encryptedLocation,hashedPass from moarTP where location=?;");
+							s.setString(1, args[1].toLowerCase());
+							rs = s.executeQuery();
+							rs.next();
+							String encryptedLoc = rs.getString(1);
+							String passwordHash = rs.getString(2);
+							boolean validated = false;
+							String[] decryptedLocation = null;
+							try {
+								validated = PasswordHash.validatePassword(args[2], passwordHash);
+								if (validated) {
+									decryptedLocation = SimpleCrypto.decrypt(args[2], encryptedLoc).split(",");
+									toGoTo = new Location(
+											Bukkit.getServer().getWorld(decryptedLocation[0]),
+											Integer.parseInt(decryptedLocation[1]),
+											Integer.parseInt(decryptedLocation[2]),
+											Integer.parseInt(decryptedLocation[3]));
+								} else {
+									sender.sendMessage("Password could not be verified.");
+									return false;
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
 					} else {
 						toGoTo = new Location(Bukkit.getServer().getWorld(rs.getString(4)),
 								rs.getInt(1),rs.getInt(2),rs.getInt(3));

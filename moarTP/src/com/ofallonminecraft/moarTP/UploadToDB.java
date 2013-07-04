@@ -15,8 +15,6 @@ import java.util.Set;
 public class UploadToDB {
 
 	public static boolean uploadToDB(String version) {
-		
-		// TODO: make it work if they have nothing to start with too!!
 
 		Map<String, MTLocation> locations  = new HashMap<String, MTLocation>();
 		Map<String, String>     info       = new HashMap<String, String>();
@@ -28,7 +26,7 @@ public class UploadToDB {
 		String database = null;
 		String user     = null;
 		String pass     = null;
-		
+
 		BufferedReader reader = null;
 		String f = "";
 		try {
@@ -72,87 +70,100 @@ public class UploadToDB {
 			return false;
 		}
 
+		boolean locExist = false;
+		boolean infoExist = false;
+		boolean homesExist = false;
 		try {
-			if ((new File("plugins/moarTP/moarTP_locs.bin").exists()))
+			if ((new File("plugins/moarTP/moarTP_locs.bin").exists())) {
 				locations = SLAPI.load("plugins/moarTP/moarTP_locs.bin");
-			if ((new File("plugins/moarTP/moarTP_info.bin").exists()))
+				locExist = true;
+			}
+			if ((new File("plugins/moarTP/moarTP_info.bin").exists())) {
 				info = SLAPI.load("plugins/moarTP/moarTP_info.bin");
-			if ((new File("plugins/moarTP/moarTP_homes.bin").exists()))
+				infoExist = true;
+			}
+			if ((new File("plugins/moarTP/moarTP_homes.bin").exists())) {
 				homes = SLAPI.load("plugins/moarTP/moarTP_homes.bin");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();	
 			return false;
 		}
 
-
-		Set<String> locsToInsert = locations.keySet();
-		Iterator<String> i = locsToInsert.iterator();
-		while (i.hasNext()) {
-			String locName = (String) i.next();
-			MTLocation coords = locations.get(locName);
-			String description = null;
-			if (info.containsKey(locName)) description = info.get(locName);
-			String template = "insert into moarTP (location, creationTime, creator, x, y, z, "
-					+ "world, info, secret, version) values(?, ?, ?, ?, ?, ?, ?, ?, 'N', ?);";
-			try {
-				PreparedStatement insertion = c.prepareStatement(template);
-				insertion.setString(1, locName);
-				insertion.setInt(4, coords.x);
-				insertion.setInt(5, coords.y);
-				insertion.setInt(6, coords.z);
-				insertion.setString(7, coords.world);
-				insertion.setString(9, version);
-				if (description!=null) {
-					if (description.split("\\r?\\n").length!=1) {
-						String trimmedDescription = description.split("\\r?\\n")[0];
-						insertion.setString(8, trimmedDescription);
-					} else {
-						insertion.setNull(8,12);
+		if (locExist) {
+			Set<String> locsToInsert = locations.keySet();
+			Iterator<String> i = locsToInsert.iterator();
+			while (i.hasNext()) {
+				String locName = (String) i.next();
+				MTLocation coords = locations.get(locName);
+				String description = null;
+				if (infoExist) {
+					if (info.containsKey(locName)) description = info.get(locName);
+				}
+				String template = "insert into moarTP (location, creationTime, creator, x, y, z, "
+						+ "world, info, secret, version) values(?, ?, ?, ?, ?, ?, ?, ?, 'N', ?);";
+				try {
+					PreparedStatement insertion = c.prepareStatement(template);
+					insertion.setString(1, locName);
+					insertion.setInt(4, coords.x);
+					insertion.setInt(5, coords.y);
+					insertion.setInt(6, coords.z);
+					insertion.setString(7, coords.world);
+					insertion.setString(9, version);
+					if (description!=null) {
+						if (description.split("\\r?\\n").length!=1) {
+							String trimmedDescription = description.split("\\r?\\n")[0];
+							insertion.setString(8, trimmedDescription);
+						} else {
+							insertion.setNull(8,12);
+						}
+						insertion.setString(3, description.split("\n")[description.split("\n").length-1].split("\\s")[2]);
+						String[] dateParts = description.split("\n")[description.split("\n").length-1].split("\\s")[5].split("/");
+						String reformattedDate = dateParts[2]+"-"+dateParts[0]+"-"+dateParts[1];
+						insertion.setString(2, reformattedDate+" "+description.split("\n")[description.split("\n").length-1].split("\\s")[4]);
 					}
-					insertion.setString(3, description.split("\n")[description.split("\n").length-1].split("\\s")[2]);
-					String[] dateParts = description.split("\n")[description.split("\n").length-1].split("\\s")[5].split("/");
-					String reformattedDate = dateParts[2]+"-"+dateParts[0]+"-"+dateParts[1];
-					insertion.setString(2, reformattedDate+" "+description.split("\n")[description.split("\n").length-1].split("\\s")[4]);
+					else {
+						insertion.setNull(8, 12);
+						insertion.setNull(3, 12);
+						insertion.setNull(2, 93);
+					}
+					insertion.executeUpdate();
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
 				}
-				else {
-					insertion.setNull(8, 12);
-					insertion.setNull(3, 12);
-					insertion.setNull(2, 93);
-				}
-				insertion.executeUpdate();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
 			}
-		}
 
-		Set<String> homesToInsert = homes.keySet();
-		Iterator<String> j = homesToInsert.iterator();
-		while (j.hasNext()) {
-			String person = (String) j.next();
-			String personsHome = homes.get(person);
-			try {
-				String template = "update moarTP set home=? where location=?;";
-				PreparedStatement alter = c.prepareStatement(template);
-				Statement s = c.createStatement();
-				String newHomeList;
-				ResultSet currentHomeList = s.executeQuery("select home from moarTP where location='"
-						+personsHome+"';");
-				if (!currentHomeList.isBeforeFirst()) {
-					newHomeList = person;
+			if (homesExist) {
+				Set<String> homesToInsert = homes.keySet();
+				Iterator<String> j = homesToInsert.iterator();
+				while (j.hasNext()) {
+					String person = (String) j.next();
+					String personsHome = homes.get(person);
+					try {
+						String template = "update moarTP set home=? where location=?;";
+						PreparedStatement alter = c.prepareStatement(template);
+						Statement s = c.createStatement();
+						String newHomeList;
+						ResultSet currentHomeList = s.executeQuery("select home from moarTP where location='"
+								+personsHome+"';");
+						if (!currentHomeList.isBeforeFirst()) {
+							newHomeList = person;
+						}
+						else {
+							currentHomeList.next();
+							if (currentHomeList.getString(1)==null || 
+									currentHomeList.getString(1).equals("null")) newHomeList = person;
+							else newHomeList = currentHomeList.getString(1) + "," + person;
+						}
+						alter.setString(1, newHomeList);
+						alter.setString(2, personsHome);
+						alter.executeUpdate();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return false;
+					}
 				}
-				else {
-					currentHomeList.next();
-					if (currentHomeList.getString(1)==null || 
-							currentHomeList.getString(1).equals("null")) newHomeList = person;
-					else newHomeList = currentHomeList.getString(1) + "," + person;
-				}
-				alter.setString(1, newHomeList);
-				alter.setString(2, personsHome);
-				alter.executeUpdate();
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
 			}
 		}
 

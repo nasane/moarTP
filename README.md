@@ -1,4 +1,4 @@
-# moarTP v0.50
+# moarTP v0.60
 
 Author: Nathan Bossart  
 Website: <http://ofallonminecraft.com/>  
@@ -11,19 +11,17 @@ The moarTP plugin adds 8 new commands for convenient, customized teleportation. 
 
 The 8 commands added by this plugin are:
 
-    /tpto    [location]                              : teleport to a custom location
-    /claim   [location] (["description"])    	     : define a custom location (where you're standing)
-    /unclaim [location]                              : remove a custom location
-    /view    (player)                                : view all locations (or locations made by a player)
-    /about   [location]               	      	     : view location information
-    /move [player1(,player2,player3,...)] [location] : teleport other player(s) to a custom location
-    /sethome [location]                              : set your personal home location
-    /gohome                                          : go to your personal home location
-
-
-The plugin is still in its early stages, as a number of new features and cleaned-up interfaces will soon be added. These include the ability to define sub-locations for locations, the ability to define secret locations only you can view and teleport to, some sort of map cursors for locations, and more.  Visit <http://github.com/ofallonminecraft/moarTP> for the latest code!
+    /tpto        [location] (password)                          : teleport to a custom location
+    /claim       [location] (["description"])    	            : define a custom location (where you're standing)
+    /claimsecret [location] (password)                          : define a custom location encrypted with a passphrase
+    /unclaim     [location]                                     : remove a custom location
+    /view        (player)                                       : view all locations (or locations made by a player)
+    /about       [location]               	      	            : view location information
+    /move [player1(,player2,player3,...)] [location] (password) : teleport other player(s) to a custom location
+    /sethome     [location]                                     : set your personal home location
+    /gohome                                                     : go to your personal home location
 
 
 # Instructions for use:
 
-Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  It should be ready to go!
+The newest version of the plugin requires a database to operate.  If you have existing locations on your server, they will be automatically sent to the database upon configuration.  Download the plugin from http://dev.bukkit.org/server-mods/moarTP.  Place in your plugins folder for your Bukkit server, and reload the server.  Open moarTP_db.config, insert database connection details, and save the file.  Then, reload the server once more.  You should be ready to go!

@@ -1,3 +1,8 @@
+### v0.60
+  -Locations are now stored in a database.   
+  -Can now claim secret locations that are encrypted with a password (/claimsecret).   
+  -Bug with listing a creator's locations is now fixed.   
+
 ### v0.50
   -/view now has the ability to display locations made by a certain player.   
   -Optimized throughout.  

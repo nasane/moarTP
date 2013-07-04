@@ -15,7 +15,7 @@ commands:
     permission-message: You should have permission to use this command.
   tpto:
     description: Teleport to a location.
-    usage: /tpto [location]
+    usage: /tpto [location] (password)
     permission: moarTP.tpto
     permission-message: You must be a player to use this command.
   claim:
@@ -30,7 +30,7 @@ commands:
     permission-message: You must be a player to use this command.
   move:
     description: Move a player to a custom location.
-    usage: /move [player1(,player2,player3,...)] [location]
+    usage: /move [player1(,player2,player3,...)] [location] (password)
     permission: moarTP.move
     permission-message: You must be an op to use this command.
   about:
