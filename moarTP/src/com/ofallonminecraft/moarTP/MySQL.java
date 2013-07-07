@@ -26,7 +26,7 @@ public class MySQL extends Database
 	public Connection open() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			this.c = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database, this.user, this.password);
+			this.c = DriverManager.getConnection("jdbc:mysql://" + this.hostname + ":" + this.port + "/" + this.database+"?autoReconnect=true", this.user, this.password);
 			return c;
 		} catch (SQLException e) {
 			System.out.println("Could not connect to MySQL server! because: " + e.getMessage());

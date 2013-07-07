@@ -48,27 +48,30 @@ public class SetHome {
 							for (String person : playerList) {
 								if (person.equals(player.getDisplayName())) {
 									playerVerified = true;
-
-									// clear player's old home
-									String newPlayerList = "";
-									for (String person2 : playerList) {
-										if (!person2.equals(player.getDisplayName())) {
-											if (!newPlayerList.equals("")) newPlayerList += ","+person2;
-											else newPlayerList = person2;
+									if (rs2.getString(2).equals(args[0].toLowerCase())) {
+										sender.sendMessage(args[0].toLowerCase()+" is already your home!");
+									} else {
+										// clear player's old home
+										String newPlayerList = "";
+										for (String person2 : playerList) {
+											if (!person2.equals(player.getDisplayName())) {
+												if (!newPlayerList.equals("")) newPlayerList += ","+person2;
+												else newPlayerList = person2;
+											}
 										}
+										String template = "update moarTP set home = ? where location = ?;";
+										PreparedStatement update = c.prepareStatement(template);
+										if (newPlayerList.equals("")) update.setNull(1, 12);
+										else update.setString(1, newPlayerList);
+										update.setString(2, rs2.getString(2));
+										update.executeUpdate();
+
+										// add player home
+										addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
+
+										sender.sendMessage("Old home ("+rs2.getString(2)+") overwritten; new home"
+												+ " set to "+args[0].toLowerCase()+".");
 									}
-									String template = "update moarTP set home = ? where location = ?;";
-									PreparedStatement update = c.prepareStatement(template);
-									if (newPlayerList.equals("")) update.setNull(1, 12);
-									else update.setString(1, newPlayerList);
-									update.setString(2, rs2.getString(2));
-									update.executeUpdate();
-
-									// add player home
-									addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
-
-									sender.sendMessage("Old home ("+rs2.getString(2)+") overwritten; new home"
-											+ " set to "+args[0].toLowerCase()+".");
 								}
 							}
 							hasNext = rs.next();

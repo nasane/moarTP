@@ -44,7 +44,7 @@ public class Tpto {
 							rs.next();
 							String encryptedLoc = rs.getString(1);
 							String passwordHash = rs.getString(2);
-							
+
 							boolean validated = false;
 							String[] decryptedLocation = null;
 							try {

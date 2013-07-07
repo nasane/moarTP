@@ -119,7 +119,7 @@ public class moarTP extends JavaPlugin
 	// on disable, print a message
 	public void onDisable() {
 		try {
-			c.close();
+			if (!c.isClosed()) c.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
