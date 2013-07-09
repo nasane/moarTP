@@ -38,7 +38,7 @@ public class View {
 					while (rs.next()) toViewList.add(rs.getString(1));
 					Collections.sort(toViewList);
 					String toView = toViewList.get(0);
-					for (int i=0; i<toViewList.size(); ++i) toView += ", "+toViewList.get(i);
+					for (int i=1; i<toViewList.size(); ++i) toView += ", "+toViewList.get(i);
 					sender.sendMessage(toView);
 				} else {
 					if (args.length == 1) {
