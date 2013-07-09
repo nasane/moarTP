@@ -3,6 +3,10 @@ package com.ofallonminecraft.moarTP;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 
 public class View {
@@ -29,8 +33,12 @@ public class View {
 					rs = c.createStatement().executeQuery("select location from moarTP;");
 				}
 				if (rs.next()) {
-					String toView = rs.getString(1);
-					while (rs.next()) toView += ", " + rs.getString(1);
+					List<String> toViewList = new ArrayList<String>();
+					toViewList.add(rs.getString(1));
+					while (rs.next()) toViewList.add(rs.getString(1));
+					Collections.sort(toViewList);
+					String toView = toViewList.get(0);
+					for (int i=0; i<toViewList.size(); ++i) toView += ", "+toViewList.get(i);
 					sender.sendMessage(toView);
 				} else {
 					if (args.length == 1) {
