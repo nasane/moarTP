@@ -12,8 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-// TODO: update plugin.yml and online docs!
-
 public class moarTP extends JavaPlugin
 {
 
@@ -80,39 +78,32 @@ public class moarTP extends JavaPlugin
 						getLogger().info("moarTP has been enabled");
 						enabled = true;
 					}
-				} else {
-					new File("plugins/moarTP/moarTP_db.config").createNewFile();
-					FileWriter writer = null;
-					try {
-						writer = new FileWriter("plugins/moarTP/moarTP_db.config");
-						writer.write("Host: \nPort: \nDatabase: \nUsername: \nPassword: \n");
-					} finally {
-						if (writer!=null) {
-							writer.close();
-						}
-					}
-					getLogger().info("For moarTP to work, please insert database "
-							+ "credentials into the plugins/moarTP/moarTP_db.config "
-							+ "file.  Then reload the server.");
-				}
+				} else createCredentialFileSkeleton();
 			} else {
 				new File("plugins/moarTP").mkdir();
-				new File("plugins/moarTP/moarTP_db.config").createNewFile();
-				FileWriter writer = null;
-				try {
-					writer = new FileWriter("plugins/moarTP/moarTP_db.config");
-					writer.write("Host: \nPort: \nDatabase: \nUsername: \nPassword: \n");
-				} finally {
-					if (writer!=null) {
-						writer.close();
-					}
-				}				
-				getLogger().info("For moarTP to work, please insert database "
-						+ "credentials into the plugins/moarTP/moarTP_db.config "
-						+ "file.  Then reload the server.");
+				createCredentialFileSkeleton();
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void createCredentialFileSkeleton() {
+		try {
+			new File("plugins/moarTP/moarTP_db.config").createNewFile();
+			FileWriter writer = null;
+			try {
+				writer = new FileWriter("plugins/moarTP/moarTP_db.config");
+				writer.write("Host: \nPort: \nDatabase: \nUsername: \nPassword: \n");
+			} finally {
+				if (writer!=null) writer.close();
+			}
+			getLogger().info("For moarTP to work, please insert database "
+					+ "credentials into the plugins/moarTP/moarTP_db.config "
+					+ "file.  Then reload the server.");
+		} catch (Exception e) {
+			getLogger().info("moarTP encountered a problem when attempting "
+					+ "to generate a database credential file.");
 		}
 	}
 

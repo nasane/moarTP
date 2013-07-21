@@ -38,18 +38,12 @@ public class ClaimSecret {
 				if (rs.next()) {
 					player.sendMessage(args[0].toLowerCase()+" is already in the library!");
 				} else {
-					/* FOR YOU CRYPTO NUTS!
-					 * The password is hashed with a salted PBKDF2 algorithm.  The
+					/* The password is hashed with a salted PBKDF2 algorithm.  The
 					 * location is encrypted with 128-bit AES.  While the password
 					 * and location is sent to the function in cleartext, only the
 					 * hashed password and the encrypted location is saved to any
 					 * files or variables accessible beyond the scope of this
-					 * function.  In addition, the password and location details
-					 * are not saved in the server logs or displayed on the
-					 * administrator console.  If you need better encryption in
-					 * Minecraft, you probably work at the NSA (in which case,
-					 * contact me and tell me cool ways to strengthen the encryption
-					 * further).
+					 * function.
 					 */
 					Location loc = player.getLocation();
 					MTLocation toSave = MTLocation.getMTLocationFromLocation(loc);
