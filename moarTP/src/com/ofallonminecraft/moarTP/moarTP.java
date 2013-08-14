@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.command.Command;
@@ -123,6 +124,37 @@ public class moarTP extends JavaPlugin
 	{
 
 		if (enabled) {
+			
+			// reconnect if we've lost our connection to the db
+			try {
+				if (!c.isValid(2)) {
+					String         hostName = null;
+					String         port     = null;
+					String         database = null;
+					String         user     = null;
+					String         pass     = null;
+					BufferedReader reader   = null;
+					String f = "";
+					try {
+						reader = new BufferedReader(new FileReader("plugins/moarTP/moarTP_db.config"));
+						String l = null;
+						while ((l=reader.readLine())!=null) f += l + "\n";
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					String[] flines = f.split("\n");
+					hostName = flines[0].split("\\s")[1];
+					port     = flines[1].split("\\s")[1];
+					database = flines[2].split("\\s")[1];
+					user     = flines[3].split("\\s")[1];
+					pass     = flines[4].split("\\s")[1];
+
+					MySQL MySQL = new MySQL(hostName, port, database, user, pass);
+					c = MySQL.open();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
 			// ----- Functions that do not require user to be a player ----- //
 
@@ -134,6 +166,8 @@ public class moarTP extends JavaPlugin
 				return Unclaim.unclaim(sender, args, c);
 			} else if (cmd.getName().equalsIgnoreCase("view")) {
 				return View.view(sender, args, c);
+			} else if (cmd.getName().equalsIgnoreCase("whereis")) {
+				return WhereIs.whereIs(sender, args, c);
 			} else
 
 

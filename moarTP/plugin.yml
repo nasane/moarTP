@@ -3,6 +3,11 @@ main: com.ofallonminecraft.moarTP.moarTP
 version: 0.60
 
 commands:
+  whereis:
+    description: Find the nearest public location to an online player.
+    usage: /whereis [player]
+    permission: moarTP.whereis
+    permission-message: You should have permission to use this command.
   unclaim:
     description: Remove a location from the system.
     usage: /unclaim [location]
@@ -53,6 +58,7 @@ permissions:
   moarTP.*:
     description: Gives access to all moarTP commands
     children:
+      moarTP.whereis: true
       moarTP.unclaim: true
       moarTP.view: true
       moarTP.tpto: true
@@ -62,6 +68,9 @@ permissions:
       moarTP.about: true
       moarTP.sethome: true
       moarTP.gohome: true
+  moarTP.whereis:
+    description: Find the nearest public location to an online player.
+    default: true
   moarTP.unclaim:
     description: Remove a location from the system.
     default: true
