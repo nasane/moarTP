@@ -1,6 +1,7 @@
 ### v0.60
   -Locations are now stored in a database.   
   -Can now claim secret locations that are encrypted with a password (/claimsecret).   
+  -Can now retrieve the closest public location to a player with /whereis.   
   -Bug with listing a creator's locations is now fixed.   
 
 ### v0.50

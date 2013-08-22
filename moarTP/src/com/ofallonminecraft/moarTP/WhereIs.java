@@ -50,15 +50,16 @@ public class WhereIs {
 					e.printStackTrace();
 				}
 			} else sender.sendMessage(args[0] + " could not be found on the server.");
-
+			return true;
+		} else {
+			// if, for whatever reason, the player doesn't have permission
+			sender.sendMessage("You don't have permission to do this!");
+			return false;
 		}
-		// if, for whatever reason, the player doesn't have permission
-		sender.sendMessage("You don't have permission to do this!");
-		return false;
 	}
 
 	private static double getDistance(int x1, int y1, int z1, int x2, int y2, int z2) {
-		return Math.sqrt((x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2);
+		return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2) + (z1-z2)*(z1-z2));
 	}
 
 }
