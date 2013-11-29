@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import org.bukkit.command.CommandSender;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class About {
 
 	public static boolean about(CommandSender sender, String[] args, Connection c) {
@@ -28,6 +30,10 @@ public class About {
 				ResultSet rs = s.executeQuery();
 				if (!rs.isBeforeFirst()) {
 					sender.sendMessage(args[0] + " is not in the library!");
+					SpellChecker sc = new SpellChecker(c);
+					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+						sender.sendMessage("Did you mean \"/about " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+					}
 					return true;
 				} else {
 					String locInfo = "\n"+args[0].toLowerCase()+":\n";

@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class Tpto {
 
 	public static boolean tpto(CommandSender sender, String[] args, Player player, Connection c) {
@@ -32,6 +34,13 @@ public class Tpto {
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" is not in the library!");
+					SpellChecker sc = new SpellChecker(c);
+					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+						sender.sendMessage("Did you mean \"/tpto " 
+								+ sc.getSuggestion(args[0].toLowerCase()) 
+								+ (args.length>1 ?  " " + args[1].toLowerCase() : "") 
+								+ "\"?");
+					}
 				} else {
 					if (rs.getString(5).equals("Y")) {
 						if (args.length<2) {

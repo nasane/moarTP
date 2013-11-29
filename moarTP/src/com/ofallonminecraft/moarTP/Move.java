@@ -7,6 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Location;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class Move {
 
 	public static boolean move(CommandSender sender, String[] args, Connection c) {
@@ -29,8 +31,13 @@ public class Move {
 				PreparedStatement s = c.prepareStatement("select x,y,z,world,secret from moarTP where location=?;");
 				s.setString(1, args[1].toLowerCase());
 				ResultSet rs = s.executeQuery();
-				if (!rs.next()) sender.sendMessage(args[1].toLowerCase()+" is not in the library!");
-				else {
+				if (!rs.next()) {
+					sender.sendMessage(args[1].toLowerCase()+" is not in the library!");
+					SpellChecker sc = new SpellChecker(c);
+					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+						sender.sendMessage("Did you mean \"/move "+ args[0] + " " + sc.getSuggestion(args[1].toLowerCase()) + "\"?");
+					}
+				} else {
 					Location toGoTo = null;
 					if (rs.getString(4).equals("Y")) {
 						if (args.length<3) {
@@ -73,7 +80,14 @@ public class Move {
 							Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo);
 							sender.sendMessage("Successfully teleported " + playerToMove
 									+ " to " + args[1].toLowerCase()+'.');
-						} else sender.sendMessage(playerToMove + " could not be found on the server.");
+						} else {
+							SpellChecker sc = new SpellChecker(c);
+							String sug = "";
+							if (sc.getSuggestion(playerToMove) != null) {
+								sug = " Did you mean \"" + sc.getSuggestion(playerToMove) + "\"?";
+							}
+							sender.sendMessage(playerToMove + " could not be found on the server." + sug);
+						}
 					}
 				}
 			} catch (Exception e) {

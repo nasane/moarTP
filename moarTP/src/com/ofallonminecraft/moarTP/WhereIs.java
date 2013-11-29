@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class WhereIs {
 
 	public static boolean whereIs(CommandSender sender, String[] args, Connection c) {
@@ -49,7 +51,13 @@ public class WhereIs {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-			} else sender.sendMessage(args[0] + " could not be found on the server.");
+			} else {
+				sender.sendMessage(args[0] + " could not be found on the server.");
+				SpellChecker sc = new SpellChecker(c);
+				if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+					sender.sendMessage("Did you mean \"/whereis " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+				}
+			}
 			return true;
 		} else {
 			// if, for whatever reason, the player doesn't have permission

@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class View {
 
 	public static boolean view(CommandSender sender, String[] args, Connection c) {
@@ -44,6 +46,10 @@ public class View {
 					if (args.length == 1) {
 						sender.sendMessage("Sorry, there aren't any locations claimed by "+args[0] +
 								". Double check: names are case sensitive!");
+						SpellChecker sc = new SpellChecker(c);
+						if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+							sender.sendMessage("Did you mean \"/view " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+						}
 					} else sender.sendMessage("No locations claimed yet. Claim one with /claim <location>");
 				}
 			} catch (Exception e) {

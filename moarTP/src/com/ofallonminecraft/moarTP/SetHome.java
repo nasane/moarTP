@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class SetHome {
 
 	// TODO: fix result set closure issues
@@ -31,6 +33,10 @@ public class SetHome {
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" could not be found in the library!"
 							+ "  Choose an existing location to be your home.");
+					SpellChecker sc = new SpellChecker(c);
+					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+						sender.sendMessage("Did you mean \"/sethome " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+					}
 				} else {
 					if (rs.getString(2).equals("Y")) {
 						player.sendMessage("Sorry, you cannot set a secret location as your home.");

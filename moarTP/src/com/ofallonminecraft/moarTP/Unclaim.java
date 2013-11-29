@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import org.bukkit.command.CommandSender;
 
+import com.ofallonminecraft.SpellChecker.SpellChecker;
+
 public class Unclaim {
 
 	public static boolean unclaim(CommandSender sender, String[] args, Connection c) {
@@ -43,6 +45,10 @@ public class Unclaim {
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" is not in the library!");
+					SpellChecker sc = new SpellChecker(c);
+					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+						sender.sendMessage("Did you mean \"/unclaim " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+					}
 				} else {
 					PreparedStatement ps = c.prepareStatement("delete from moarTP where location=?;");
 					ps.setString(1, args[0].toLowerCase());
