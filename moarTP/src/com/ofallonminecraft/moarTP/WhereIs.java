@@ -54,8 +54,8 @@ public class WhereIs {
 			} else {
 				sender.sendMessage(args[0] + " could not be found on the server.");
 				SpellChecker sc = new SpellChecker(c);
-				if (sc.getSuggestion(args[0].toLowerCase()) != null) {
-					sender.sendMessage("Did you mean \"/whereis " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+				if (sc.getSuggestion(args[0]) != null) {
+					sender.sendMessage("Did you mean \"/whereis " + sc.getSuggestion(args[0]) + "\"?");
 				}
 			}
 			return true;

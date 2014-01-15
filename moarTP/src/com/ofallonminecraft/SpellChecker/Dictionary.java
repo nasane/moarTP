@@ -75,4 +75,8 @@ public class Dictionary {
 		}
 		else return false;
 	}
+	
+	public Set<String> getWords() {
+		return dict;
+	}
 }

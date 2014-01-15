@@ -1,3 +1,7 @@
+### v0.61
+  -Fixed /claimsecret to check if a password is provided.   
+  -Misspelled commands now provide suggestions (based on the Levenshtein distance).   
+
 ### v0.60
   -Locations are now stored in a database.   
   -Can now claim secret locations that are encrypted with a password (/claimsecret).   

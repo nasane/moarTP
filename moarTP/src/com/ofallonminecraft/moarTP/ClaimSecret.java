@@ -19,8 +19,8 @@ public class ClaimSecret {
 		if (sender.hasPermission("moarTP.claimsecret")) {
 
 			// check number of arguments
-			if (args.length < 1) {
-				sender.sendMessage("Must enter a location name!");
+			if (args.length < 2) {
+				sender.sendMessage("Must enter a location name and a password!");
 				return false;
 			}
 			// check that any extra location info is enclosed in quotes

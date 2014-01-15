@@ -11,7 +11,7 @@ public class SpellChecker {
 	// TODO: generate global spell checker object that is initially loaded, kept up to date, and accessible from the methods that need it
 	// This will improve efficiency.
 	
-	static SwapCorrector sw;
+	static LevenshteinCorrector lc;
 
 	public SpellChecker(Connection c) {
 		
@@ -39,12 +39,12 @@ public class SpellChecker {
 			d.addWord(p.getName());
 		}		
 		
-		sw = new SwapCorrector(d);
+		lc = new LevenshteinCorrector(d);
 
 	}
 
 	public String getSuggestion(String toCorrect) {
-		Set<String> corr = sw.getCorrections(toCorrect);
+		Set<String> corr = lc.getCorrections(toCorrect);
 		if (corr.size()>0) {
 			return (String) corr.toArray()[0];
 		}

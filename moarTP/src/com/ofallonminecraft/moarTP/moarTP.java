@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class moarTP extends JavaPlugin
 {
 
-	public String version = "0.60";
+	public String version = "0.61";
 	public static Map<String, String> metaData = new HashMap<String, String>();
 	public boolean enabled = false;
 	Connection c = null;
@@ -31,7 +31,7 @@ public class moarTP extends JavaPlugin
 						metaData = SLAPI.load("plugins/moarTP/moarTP.bin");
 						String oldVersion = metaData.get("version");
 						if (!oldVersion.equals(version)) {
-							// provide backwards and forward compatibility for future versions
+							// provide backwards and forward compatibility for future versions here
 							metaData.remove("version");
 							metaData.put("version", version);
 						}

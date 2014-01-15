@@ -47,8 +47,8 @@ public class View {
 						sender.sendMessage("Sorry, there aren't any locations claimed by "+args[0] +
 								". Double check: names are case sensitive!");
 						SpellChecker sc = new SpellChecker(c);
-						if (sc.getSuggestion(args[0].toLowerCase()) != null) {
-							sender.sendMessage("Did you mean \"/view " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+						if (sc.getSuggestion(args[0]) != null) {
+							sender.sendMessage("Did you mean \"/view " + sc.getSuggestion(args[0]) + "\"?");
 						}
 					} else sender.sendMessage("No locations claimed yet. Claim one with /claim <location>");
 				}

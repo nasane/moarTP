@@ -34,7 +34,7 @@ public class Move {
 				if (!rs.next()) {
 					sender.sendMessage(args[1].toLowerCase()+" is not in the library!");
 					SpellChecker sc = new SpellChecker(c);
-					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
+					if (sc.getSuggestion(args[1].toLowerCase()) != null) {
 						sender.sendMessage("Did you mean \"/move "+ args[0] + " " + sc.getSuggestion(args[1].toLowerCase()) + "\"?");
 					}
 				} else {
@@ -81,6 +81,7 @@ public class Move {
 							sender.sendMessage("Successfully teleported " + playerToMove
 									+ " to " + args[1].toLowerCase()+'.');
 						} else {
+							// TODO: have the spell checker only check online people!
 							SpellChecker sc = new SpellChecker(c);
 							String sug = "";
 							if (sc.getSuggestion(playerToMove) != null) {
