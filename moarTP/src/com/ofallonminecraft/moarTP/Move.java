@@ -3,10 +3,10 @@ package com.ofallonminecraft.moarTP;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.Location;
-
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class Move {
@@ -33,9 +33,11 @@ public class Move {
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) {
 					sender.sendMessage(args[1].toLowerCase()+" is not in the library!");
-					SpellChecker sc = new SpellChecker(c);
-					if (sc.getSuggestion(args[1].toLowerCase()) != null) {
-						sender.sendMessage("Did you mean \"/move "+ args[0] + " " + sc.getSuggestion(args[1].toLowerCase()) + "\"?");
+					HashSet<String> dict_subs = new HashSet<String>();
+					dict_subs.add(SpellChecker.LOCATIONS);
+					String sug = new SpellChecker(c, dict_subs).getSuggestion(args[1].toLowerCase());
+					if (sug != null) {
+						sender.sendMessage("Did you mean \"/move "+ args[0] + " " + sug + "\"?");
 					}
 				} else {
 					Location toGoTo = null;
@@ -81,11 +83,12 @@ public class Move {
 							sender.sendMessage("Successfully teleported " + playerToMove
 									+ " to " + args[1].toLowerCase()+'.');
 						} else {
-							// TODO: have the spell checker only check online people!
-							SpellChecker sc = new SpellChecker(c);
+							HashSet<String> dict_subs = new HashSet<String>();
+							dict_subs.add(SpellChecker.ONLINE_PLAYERS);
+							String sugPlayer = new SpellChecker(c, dict_subs).getSuggestion(playerToMove);
 							String sug = "";
-							if (sc.getSuggestion(playerToMove) != null) {
-								sug = " Did you mean \"" + sc.getSuggestion(playerToMove) + "\"?";
+							if (sugPlayer != null) {
+								sug = " Did you mean \"" + sugPlayer + "\"?";
 							}
 							sender.sendMessage(playerToMove + " could not be found on the server." + sug);
 						}

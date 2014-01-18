@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class WhereIs {
@@ -53,9 +53,11 @@ public class WhereIs {
 				}
 			} else {
 				sender.sendMessage(args[0] + " could not be found on the server.");
-				SpellChecker sc = new SpellChecker(c);
-				if (sc.getSuggestion(args[0]) != null) {
-					sender.sendMessage("Did you mean \"/whereis " + sc.getSuggestion(args[0]) + "\"?");
+				HashSet<String> dict_subs = new HashSet<String>();
+				dict_subs.add(SpellChecker.ONLINE_PLAYERS);
+				String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0]);
+				if (sug != null) {
+					sender.sendMessage("Did you mean \"/whereis " + sug + "\"?");
 				}
 			}
 			return true;

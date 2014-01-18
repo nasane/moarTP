@@ -3,6 +3,7 @@ package com.ofallonminecraft.moarTP;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,12 +35,12 @@ public class Tpto {
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" is not in the library!");
-					SpellChecker sc = new SpellChecker(c);
-					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
-						sender.sendMessage("Did you mean \"/tpto " 
-								+ sc.getSuggestion(args[0].toLowerCase()) 
-								+ (args.length>1 ?  " " + args[1].toLowerCase() : "") 
-								+ "\"?");
+					HashSet<String> dict_subs = new HashSet<String>();
+					dict_subs.add(SpellChecker.LOCATIONS);
+					String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0].toLowerCase());
+					if (sug != null) {
+						sender.sendMessage("Did you mean \"/tpto " + sug
+								+ (args.length>1 ?  " " + args[1].toLowerCase() : "") + "\"?");
 					}
 				} else {
 					if (rs.getString(5).equals("Y")) {

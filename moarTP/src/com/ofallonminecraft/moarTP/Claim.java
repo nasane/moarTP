@@ -75,9 +75,7 @@ public class Claim {
 			}
 			return true;
 			// ----- END CLAIM ----- //
-		}
-
-		else {
+		} else {
 			// if user doesn't have permission, present an error message
 			sender.sendMessage("You don't have permission to do this!");
 			return false;	

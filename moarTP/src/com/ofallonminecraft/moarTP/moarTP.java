@@ -13,10 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class moarTP extends JavaPlugin
-{
+public class moarTP extends JavaPlugin {
 
-	public String version = "0.61";
+	public String version = "0.62";
 	public static Map<String, String> metaData = new HashMap<String, String>();
 	public boolean enabled = false;
 	Connection c = null;

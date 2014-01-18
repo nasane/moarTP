@@ -3,8 +3,8 @@ package com.ofallonminecraft.moarTP;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 import org.bukkit.command.CommandSender;
-
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class About {
@@ -23,24 +23,25 @@ public class About {
 			}
 
 			// ----- ABOUT ----- //
-
 			try {
 				PreparedStatement s = c.prepareStatement("select info,creator,creationTime from moarTP where location=?;");
 				s.setString(1, args[0].toLowerCase());
 				ResultSet rs = s.executeQuery();
 				if (!rs.isBeforeFirst()) {
 					sender.sendMessage(args[0] + " is not in the library!");
-					SpellChecker sc = new SpellChecker(c);
-					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
-						sender.sendMessage("Did you mean \"/about " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+					HashSet<String> dict_sub = new HashSet<String>();
+					dict_sub.add(SpellChecker.LOCATIONS);
+					String sug = new SpellChecker(c, dict_sub).getSuggestion(args[0].toLowerCase());
+					if (sug != null) {
+						sender.sendMessage("Did you mean \"/about " + sug + "\"?");
 					}
 					return true;
 				} else {
 					String locInfo = "\n"+args[0].toLowerCase()+":\n";
 					rs.next();
 					boolean descriptionNull = false;
-					boolean timeNull = false;
-					boolean creatorNull = false;
+					boolean timeNull        = false;
+					boolean creatorNull     = false;
 					if (rs.getString(1)!=null && !rs.getString(1).equals("null")) {
 						locInfo+=rs.getString(1)+"\n";
 					} else descriptionNull = true;

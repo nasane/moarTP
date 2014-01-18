@@ -3,9 +3,9 @@ package com.ofallonminecraft.moarTP;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class SetHome {
@@ -33,9 +33,11 @@ public class SetHome {
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" could not be found in the library!"
 							+ "  Choose an existing location to be your home.");
-					SpellChecker sc = new SpellChecker(c);
-					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
-						sender.sendMessage("Did you mean \"/sethome " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+					HashSet<String> dict_subs = new HashSet<String>();
+					dict_subs.add(SpellChecker.LOCATIONS);
+					String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0].toLowerCase());
+					if (sug != null) {
+						sender.sendMessage("Did you mean \"/sethome " + sug + "\"?");
 					}
 				} else {
 					if (rs.getString(2).equals("Y")) {

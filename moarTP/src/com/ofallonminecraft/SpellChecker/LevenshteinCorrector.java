@@ -34,7 +34,9 @@ public class LevenshteinCorrector extends Corrector {
 					}
 				}
 			}
-			// TODO: don't return anything if min is too large?
+			if (min>5) {  // don't return suggestions if more than 5 changes are needed
+				answer.clear();
+			}
 		}
 		return answer;
 	}
@@ -52,9 +54,9 @@ public class LevenshteinCorrector extends Corrector {
 				if (s.charAt(l-1) == t.charAt(k-1)) {
 					d[l][k] = d[l-1][k-1];
 				} else {
-					int del = d[l-1][k] +1;
-					int ins = d[l][k-1] +1;
-					int sub = d[l-1][k-1] +1;
+					int del = d[l-1][k]   + 1;
+					int ins = d[l][k-1]   + 1;
+					int sub = d[l-1][k-1] + 1;
 					d[l][k] = minimumOf(del, ins, sub);
 				}
 			}

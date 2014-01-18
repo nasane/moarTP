@@ -1,6 +1,6 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.61
+version: 0.62
 
 commands:
   whereis:

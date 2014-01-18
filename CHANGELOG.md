@@ -1,3 +1,6 @@
+### v0.62
+  -Minor improvements with the spell checking feature.   
+
 ### v0.61
   -Fixed /claimsecret to check if a password is provided.   
   -Misspelled commands now provide suggestions (based on the Levenshtein distance).   

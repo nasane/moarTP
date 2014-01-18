@@ -3,6 +3,7 @@ package com.ofallonminecraft.moarTP;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashSet;
 import org.bukkit.command.CommandSender;
 
 import com.ofallonminecraft.SpellChecker.SpellChecker;
@@ -45,9 +46,11 @@ public class Unclaim {
 				ResultSet rs = s.executeQuery();
 				if (!rs.next()) {
 					sender.sendMessage(args[0].toLowerCase()+" is not in the library!");
-					SpellChecker sc = new SpellChecker(c);
-					if (sc.getSuggestion(args[0].toLowerCase()) != null) {
-						sender.sendMessage("Did you mean \"/unclaim " + sc.getSuggestion(args[0].toLowerCase()) + "\"?");
+					HashSet<String> dict_subs = new HashSet<String>();
+					dict_subs.add(SpellChecker.LOCATIONS);
+					String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0].toLowerCase());
+					if (sug != null) {
+						sender.sendMessage("Did you mean \"/unclaim " + sug + "\"?");
 					}
 				} else {
 					PreparedStatement ps = c.prepareStatement("delete from moarTP where location=?;");
