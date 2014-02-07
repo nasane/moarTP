@@ -1,4 +1,4 @@
-# moarTP v0.62
+# moarTP v0.70
 
 Author: Nathan Bossart  
 Website: <http://ofallonminecraft.com/>  
@@ -6,14 +6,15 @@ Contact: <info@ofallonminecraft.com>
 
 
 # Description:
-The moarTP plugin adds 10 new commands for convenient, customized teleportation. Instead of dealing with coordinates or depending on other players, users may save locations to the server for easy teleportation later. This provides for easy navigation between player creations.
+The moarTP plugin adds 11 new commands for convenient, customized teleportation. Instead of dealing with coordinates or depending on other players, users may save locations to the server for easy teleportation later. This provides for easy navigation between player creations.
 
 
-The 10 commands added by this plugin are:
+The 11 commands added by this plugin are:
 
     /tpto        [location] (password)                          : teleport to a custom location
     /claim       [location] (["description"])                   : define a custom location (where you're standing)
     /claimsecret [location] (password) (["description"])        : define a custom location encrypted with a passphrase
+    /describe    [location] ["description"]                     : alter or add a description to a custom location
     /unclaim     [location]                                     : remove a custom location
     /view        (player)                                       : view all locations (or locations made by a player)
     /about       [location]                                     : view location information

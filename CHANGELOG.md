@@ -1,3 +1,7 @@
+### v0.70
+  -Added /desribe.   
+  -/claim and /claimsecret encourage users to describe their claims.   
+
 ### v0.62
   -Minor improvements with the spell checking feature.   
 
