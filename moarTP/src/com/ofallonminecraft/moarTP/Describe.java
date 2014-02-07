@@ -5,21 +5,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import org.bukkit.command.CommandSender;
-
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
-public class Unclaim {
+public class Describe {
 
-  public static boolean unclaim(CommandSender sender, String[] args, Connection c) {
+  public static boolean describe(CommandSender sender, String[] args, Connection c) {
 
     // check number of arguments
-    if (args.length > 1) {
-      sender.sendMessage("Location name must be one word!");
-      return false;
-    }
     if (args.length < 1) {
-      sender.sendMessage("Must choose a location to unclaim!");
+      sender.sendMessage("Must enter a location name and a description!");
       return false;
+    } else if (args.length < 2) {
+      sender.sendMessage("Must enter a description for the location!");
+      return false;
+    } else {
+      if (!(args[1].startsWith("\"") && args[args.length-1].endsWith("\""))) {
+        sender.sendMessage("Location name or description not formatted correctly!");
+        return false;
+      } 
     }
 
     // check if user is the creator of the location
@@ -40,10 +43,15 @@ public class Unclaim {
     // check user permissions
     if (sender.isOp() || isCreator) {
 
-      // ----- UNCLAIM ----- //
+      // ----- DESCRIBE ----- //
       try {
         PreparedStatement s = c.prepareStatement("select location from moarTP where location=?;");
         s.setString(1, args[0].toLowerCase());
+        String description = "";
+        for (int i=1; i<args.length; ++i) {
+          description += args[i] + ' ';
+        }
+        description = description.substring(1,description.length()-2 );
         ResultSet rs = s.executeQuery();
         if (!rs.next()) {
           sender.sendMessage(args[0].toLowerCase()+" is not in the library!");
@@ -51,20 +59,21 @@ public class Unclaim {
           dict_subs.add(SpellChecker.LOCATIONS);
           String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0].toLowerCase());
           if (sug != null) {
-            sender.sendMessage("Did you mean \"/unclaim " + sug + "\"?");
+            sender.sendMessage("Did you mean '/describe " + sug + "\"" + description + "\"'?");
           }
         } else {
-          PreparedStatement ps = c.prepareStatement("delete from moarTP where location=?;");
-          ps.setString(1, args[0].toLowerCase());
+          PreparedStatement ps = c.prepareStatement("update moarTP change info=? where location=?;");
+          ps.setString(1, description);
+          ps.setString(2, args[0].toLowerCase());
           ps.executeUpdate();
-          sender.sendMessage(args[0].toLowerCase()+" was successfully deleted from the library.");
+          sender.sendMessage(args[0].toLowerCase()+"'s description was successfully updated in the library.");
         }
         rs.close();
       } catch (Exception e) {
         e.printStackTrace();
       }
       return true;
-      // ----- END UNCLAIM ----- //
+      // ----- END DESCRIBE ----- //
     }
     // if the user doesn't have permission, present an error message
     sender.sendMessage("You don't have permission to do this!");

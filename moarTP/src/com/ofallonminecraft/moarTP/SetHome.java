@@ -10,116 +10,117 @@ import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class SetHome {
 
-	// TODO: fix result set closure issues
+  // TODO: fix result set closure issues
 
-	public static boolean sethome(CommandSender sender, String[] args, Player player, Connection c) {
-		if (sender.hasPermission("moarTP.sethome")) {
+  public static boolean sethome(CommandSender sender, String[] args, Player player, Connection c) {
+    if (sender.hasPermission("moarTP.sethome")) {
 
-			// check number of arguments
-			if (args.length < 1) {
-				sender.sendMessage("Must enter a location name!");
-				return false;
-			}
-			if (args.length > 1) {
-				sender.sendMessage("You can only choose one home!");
-				return false;
-			}
+      // check number of arguments
+      if (args.length < 1) {
+        sender.sendMessage("Must enter a location name!");
+        return false;
+      }
+      if (args.length > 1) {
+        sender.sendMessage("You can only choose one home!");
+        return false;
+      }
 
-			// ----- SETHOME ----- //
-			try {
-				PreparedStatement s = c.prepareStatement("select home,secret from moarTP where location=?;");
-				s.setString(1, args[0].toLowerCase());
-				ResultSet rs = s.executeQuery();
-				if (!rs.next()) {
-					sender.sendMessage(args[0].toLowerCase()+" could not be found in the library!"
-							+ "  Choose an existing location to be your home.");
-					HashSet<String> dict_subs = new HashSet<String>();
-					dict_subs.add(SpellChecker.LOCATIONS);
-					String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0].toLowerCase());
-					if (sug != null) {
-						sender.sendMessage("Did you mean \"/sethome " + sug + "\"?");
-					}
-				} else {
-					if (rs.getString(2).equals("Y")) {
-						player.sendMessage("Sorry, you cannot set a secret location as your home.");
-						return true;
-					}
-					String oldHomeList = rs.getString(1);
-					PreparedStatement s2 = c.prepareStatement("select home,location,secret from moarTP where home LIKE ?;");
-					s2.setString(1, "%"+player.getDisplayName()+"%");
-					ResultSet rs2 = s2.executeQuery();
-					if (rs2.next()) {
-						boolean playerVerified = false;
-						boolean hasNext = true;
-						while (!playerVerified && hasNext) {
-							String[] playerList = rs2.getString(1).split(",");
-							for (String person : playerList) {
-								if (person.equals(player.getDisplayName())) {
-									playerVerified = true;
-									if (rs2.getString(2).equals(args[0].toLowerCase())) {
-										sender.sendMessage(args[0].toLowerCase()+" is already your home!");
-									} else {
-										// clear player's old home
-										String newPlayerList = "";
-										for (String person2 : playerList) {
-											if (!person2.equals(player.getDisplayName())) {
-												if (!newPlayerList.equals("")) newPlayerList += ","+person2;
-												else newPlayerList = person2;
-											}
-										}
-										String template = "update moarTP set home = ? where location = ?;";
-										PreparedStatement update = c.prepareStatement(template);
-										if (newPlayerList.equals("")) update.setNull(1, 12);
-										else update.setString(1, newPlayerList);
-										update.setString(2, rs2.getString(2));
-										update.executeUpdate();
+      // ----- SETHOME ----- //
+      try {
+        PreparedStatement s = c.prepareStatement("select home,secret from moarTP where location=?;");
+        s.setString(1, args[0].toLowerCase());
+        ResultSet rs = s.executeQuery();
+        if (!rs.next()) {
+          sender.sendMessage(args[0].toLowerCase()+" could not be found in the library!"
+              + "  Choose an existing location to be your home.");
+          HashSet<String> dict_subs = new HashSet<String>();
+          dict_subs.add(SpellChecker.LOCATIONS);
+          String sug = new SpellChecker(c, dict_subs).getSuggestion(args[0].toLowerCase());
+          if (sug != null) {
+            sender.sendMessage("Did you mean \"/sethome " + sug + "\"?");
+          }
+        } else {
+          if (rs.getString(2).equals("Y")) {
+            player.sendMessage("Sorry, you cannot set a secret location as your home.");
+            return true;
+          }
+          String oldHomeList = rs.getString(1);
+          PreparedStatement s2 = c.prepareStatement("select home,location,secret from moarTP where home LIKE ?;");
+          s2.setString(1, "%"+player.getDisplayName()+"%");
+          ResultSet rs2 = s2.executeQuery();
+          if (rs2.next()) {
+            boolean playerVerified = false;
+            boolean hasNext = true;
+            while (!playerVerified && hasNext) {
+              String[] playerList = rs2.getString(1).split(",");
+              for (String person : playerList) {
+                if (person.equals(player.getDisplayName())) {
+                  playerVerified = true;
+                  if (rs2.getString(2).equals(args[0].toLowerCase())) {
+                    sender.sendMessage(args[0].toLowerCase()+" is already your home!");
+                  } else {
+                    // clear player's old home
+                    String newPlayerList = "";
+                    for (String person2 : playerList) {
+                      if (!person2.equals(player.getDisplayName())) {
+                        if (!newPlayerList.equals("")) newPlayerList += ","+person2;
+                        else newPlayerList = person2;
+                      }
+                    }
+                    String template = "update moarTP set home = ? where location = ?;";
+                    PreparedStatement update = c.prepareStatement(template);
+                    if (newPlayerList.equals("")) update.setNull(1, 12);
+                    else update.setString(1, newPlayerList);
+                    update.setString(2, rs2.getString(2));
+                    update.executeUpdate();
 
-										// add player home
-										addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
+                    // add player home
+                    addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
 
-										sender.sendMessage("Old home ("+rs2.getString(2)+") overwritten; new home"
-												+ " set to "+args[0].toLowerCase()+".");
-									}
-								}
-							}
-							hasNext = rs.next();
-						}
-						if (!playerVerified) {
-							// add player home
-							addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
-						}
-					} else {
-						// add player home
-						addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
-					}
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return true;
-			// ----- END SETHOME ----- //
+                    sender.sendMessage("Old home ("+rs2.getString(2)+") overwritten; new home"
+                        + " set to "+args[0].toLowerCase()+".");
+                  }
+                }
+              }
+              hasNext = rs.next();
+            }
+            if (!playerVerified) {
+              // add player home
+              addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
+            }
+          } else {
+            // add player home
+            addPlayerHome(player, oldHomeList, c, args[0].toLowerCase());
+          }
+        }
+        rs.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return true;
+      // ----- END SETHOME ----- //
 
-		} else {
-			sender.sendMessage("You don't have permission to do this!");
-			return false;
-		}
-	}
+    } else {
+      sender.sendMessage("You don't have permission to do this!");
+      return false;
+    }
+  }
 
-	public static void addPlayerHome(Player player, String oldPlayerList, Connection c, String newHome) {
-		String newPlayerList = "";
-		if (oldPlayerList==null || oldPlayerList.equals("null")) newPlayerList = player.getDisplayName();
-		else newPlayerList = oldPlayerList+","+player.getDisplayName();
-		String template = "update moarTP set home = ? where location = ?;";
-		PreparedStatement update;
-		try {
-			update = c.prepareStatement(template);
-			update.setString(1, newPlayerList);
-			update.setString(2, newHome);
-			update.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		player.sendMessage("New home set to "+newHome+".");
-	}
+  public static void addPlayerHome(Player player, String oldPlayerList, Connection c, String newHome) {
+    String newPlayerList = "";
+    if (oldPlayerList==null || oldPlayerList.equals("null")) newPlayerList = player.getDisplayName();
+    else newPlayerList = oldPlayerList+","+player.getDisplayName();
+    String template = "update moarTP set home = ? where location = ?;";
+    PreparedStatement update;
+    try {
+      update = c.prepareStatement(template);
+      update.setString(1, newPlayerList);
+      update.setString(2, newHome);
+      update.executeUpdate();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    player.sendMessage("New home set to "+newHome+".");
+  }
 
 }

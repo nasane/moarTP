@@ -1,8 +1,13 @@
 name: moarTP
 main: com.ofallonminecraft.moarTP.moarTP
-version: 0.62
+version: 0.70
 
 commands:
+  describe:
+    description: Change a location's description.
+    usage: /describe [location] (["description"])
+    permission: moarTP.describe
+    permission-message: You must be an op or the creator of the location to use this command.
   whereis:
     description: Find the nearest public location to an online player.
     usage: /whereis [player]
@@ -58,6 +63,7 @@ permissions:
   moarTP.*:
     description: Gives access to all moarTP commands
     children:
+      moarTP.describe: true
       moarTP.whereis: true
       moarTP.unclaim: true
       moarTP.view: true
@@ -68,6 +74,9 @@ permissions:
       moarTP.about: true
       moarTP.sethome: true
       moarTP.gohome: true
+  moarTP.describe:
+    description: Change a location's description.
+    default: true
   moarTP.whereis:
     description: Find the nearest public location to an online player.
     default: true
