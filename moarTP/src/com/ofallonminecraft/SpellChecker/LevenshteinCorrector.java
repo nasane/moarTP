@@ -31,7 +31,6 @@ public class LevenshteinCorrector extends Corrector {
           }
         }
       }
-      if (min>5) answer.clear();
     }
     return answer;
   }
@@ -55,13 +54,9 @@ public class LevenshteinCorrector extends Corrector {
   }
 
   private int minimumOf(int i, int j, int k) {
-    if (i<j) {
-      if (i<k) return i;
-      else return k;
-    } else {
-      if (j<k) return j;
-      else return k;
-    }
+    if      (i<j && i<k) return i;
+    else if (j<i && j<k) return j;
+    else                 return k;
   }
 
 }
