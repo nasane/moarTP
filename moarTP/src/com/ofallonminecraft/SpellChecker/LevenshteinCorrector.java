@@ -42,7 +42,7 @@ public class LevenshteinCorrector extends Corrector {
     if (t.length() == 0) return s.length();
     int[] v0 = new int[t.length()+1];
     int[] v1 = new int[t.length()+1];
-    for (int i=0; i<=v0.length; ++i) v0[i] = i;
+    for (int i=0; i<v0.length; ++i) v0[i] = i;
     for (int i=0; i<s.length(); ++i) {
       v1[0] = i+1;
       for (int j=0; j<t.length(); ++j) {
