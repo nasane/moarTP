@@ -62,7 +62,7 @@ public class Describe {
             sender.sendMessage("Did you mean '/describe " + sug + "\"" + description + "\"'?");
           }
         } else {
-          PreparedStatement ps = c.prepareStatement("update moarTP change info=? where location=?;");
+          PreparedStatement ps = c.prepareStatement("update moarTP set info=? where location=?;");
           ps.setString(1, description);
           ps.setString(2, args[0].toLowerCase());
           ps.executeUpdate();
