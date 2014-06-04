@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
@@ -34,7 +37,9 @@ public class Describe {
       if (creatorName.next() && 
           creatorName.getString(1)!=null &&
           !creatorName.getString(1).equals("null") &&
-          creatorName.getString(1).equals(sender.getName())) isCreator = true;
+          Bukkit.getServer().getPlayer(UUID.fromString(
+              creatorName.getString(1))).getDisplayName().equals(
+                  sender.getName())) isCreator = true;
       creatorName.close();
     } catch (Exception e) {
       e.printStackTrace();

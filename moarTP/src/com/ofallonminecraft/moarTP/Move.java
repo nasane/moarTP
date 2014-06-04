@@ -11,6 +11,7 @@ import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class Move {
 
+  @SuppressWarnings("deprecation")
   public static boolean move(CommandSender sender, String[] args, Connection c) {
 
     // check user permissions
@@ -77,6 +78,7 @@ public class Move {
           }
           String[] playersToMove = args[0].split(",");
           for (String playerToMove : playersToMove) {
+            // TODO: find alternate method for doing this (it is deprecated)
             if (Bukkit.getServer().getPlayer(playerToMove)!=null &&
                 Bukkit.getServer().getPlayer(playerToMove).isOnline()) {
               Bukkit.getServer().getPlayer(playerToMove).teleport(toGoTo);

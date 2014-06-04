@@ -55,7 +55,7 @@ public class ClaimSecret {
           } catch (Exception e) {
             e.printStackTrace();
           }
-          String creator = player.getDisplayName();
+          String creator = player.getUniqueId().toString();
           DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           Date date = new Date();
           String timeStamp = dateFormat.format(date);

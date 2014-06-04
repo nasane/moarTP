@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class View {
 
+  @SuppressWarnings("deprecation")
   public static boolean view(CommandSender sender, String[] args, Connection c) {
 
     // check user permissions
@@ -28,7 +30,8 @@ public class View {
         PreparedStatement s = null;
         if (args.length == 1) {
           s = c.prepareStatement("select location from moarTP where creator=?;");
-          s.setString(1, args[0]);
+          // TODO: find another way (getPlayer() is deprecated)
+          s.setString(1, Bukkit.getServer().getPlayer(args[0]).getUniqueId().toString());
           rs = s.executeQuery();
         } else {
           rs = c.createStatement().executeQuery("select location from moarTP;");

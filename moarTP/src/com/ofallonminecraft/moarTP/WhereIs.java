@@ -12,6 +12,7 @@ import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class WhereIs {
 
+  @SuppressWarnings("deprecation")
   public static boolean whereIs(CommandSender sender, String[] args, Connection c) {
 
     // check user permissions
@@ -22,6 +23,7 @@ public class WhereIs {
         return false;
       }
 
+      // TODO: find another way (getPlayer() is deprecated)
       if (Bukkit.getServer().getPlayer(args[0])!=null && Bukkit.getServer().getPlayer(args[0]).isOnline()) {
         Location playerLoc = Bukkit.getServer().getPlayer(args[0]).getLocation();
         int x = playerLoc.getBlockX();

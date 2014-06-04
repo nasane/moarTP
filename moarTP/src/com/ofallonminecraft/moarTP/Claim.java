@@ -39,7 +39,7 @@ public class Claim {
           player.sendMessage(args[0].toLowerCase()+" is already in the library!");
         } else {
           Location loc = player.getLocation();
-          String creator = player.getDisplayName();
+          String creator = player.getUniqueId().toString();
           DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
           Date date = new Date();
           String timeStamp = dateFormat.format(date);

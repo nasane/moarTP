@@ -32,6 +32,7 @@ public class SpellChecker {
         } 
         rs.close();
       }
+      // TODO: this won't work anymore
       if (dictionary_subsets==null || dictionary_subsets.contains(CREATORS)) {
         rs = c.createStatement().executeQuery("select distinct creator from moarTP;");
         if (rs.next()) {

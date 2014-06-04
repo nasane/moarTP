@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class moarTP extends JavaPlugin {
 
-  public String version = "0.70";
+  public String version = "0.71";
   public static Map<String, String> metaData = new HashMap<String, String>();
   public boolean enabled = false;
   Connection c = null;
@@ -25,18 +25,23 @@ public class moarTP extends JavaPlugin {
     try {
       if (new File("plugins/moarTP/").exists()) {
         if (new File("plugins/moarTP/moarTP_db.config").exists()) {
-          boolean skipConnect = false;
+          boolean skipConnect                  = false;
+          boolean switchToUuidUponDbConnection = false;
           if (new File("plugins/moarTP/moarTP.bin").exists()) {
             metaData = SLAPI.load("plugins/moarTP/moarTP.bin");
             String oldVersion = metaData.get("version");
             if (!oldVersion.equals(version)) {
               // provide backwards and forward compatibility for future versions here
+              if (Double.valueOf(oldVersion) < 0.71) {
+                switchToUuidUponDbConnection = true;
+              }
               metaData.remove("version");
               metaData.put("version", version);
             }
             SLAPI.save(metaData, "plugins/moarTP/moarTP.bin");
           } else {
             boolean uploadSuccess = UploadToDB.uploadToDB(version);
+            switchToUuidUponDbConnection = true;
             if (uploadSuccess) {
               getLogger().info("All moarTP locations have been moved "
                   + "to the database provided.  You may delete all plugin files "
@@ -75,6 +80,16 @@ public class moarTP extends JavaPlugin {
 
             MySQL MySQL = new MySQL(hostName, port, database, user, pass);
             c = MySQL.open();
+            
+            if (switchToUuidUponDbConnection) {
+              boolean migrateToUuidSuccess = MigrateToUuid.migrateToUuid(c);
+              if (!migrateToUuidSuccess) {
+                getLogger().info("Something went horribly wrong when trying to "
+                    + "migrate to using player UUID's.  Please let the author "
+                    + "of the plugin know: http://dev.bukkit.org/bukkit-plugins/moartp/");
+              }
+            }
+            
             getLogger().info("moarTP has been enabled");
             enabled = true;
           }
