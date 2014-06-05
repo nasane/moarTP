@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import com.ofallonminecraft.SpellChecker.SpellChecker;
@@ -49,7 +48,7 @@ public class About {
             locInfo+=rs.getString(1)+"\n";
           } else descriptionNull = true;
           if (rs.getString(2)!=null && !rs.getString(2).equals("null")) {
-            locInfo+="Created by "+ Bukkit.getServer().getPlayer(UUID.fromString(rs.getString(2))).getDisplayName();
+            locInfo+="Created by "+ Bukkit.getServer().getOfflinePlayer(UUID.fromString(rs.getString(2))).getName();
             if (rs.getString(3)!=null && !rs.getString(3).equals("null")) {
               locInfo+=" on "+rs.getString(3)+".";
             } else timeNull = true;

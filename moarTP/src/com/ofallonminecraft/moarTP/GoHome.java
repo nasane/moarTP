@@ -23,7 +23,7 @@ public class GoHome {
       // ----- GOHOME ----- //
       try {
         PreparedStatement s = c.prepareStatement("select home,x,y,z,world,location from moarTP where home LIKE ?;");
-        s.setString(1, "%"+player.getDisplayName()+"%");
+        s.setString(1, "%"+player.getUniqueId().toString()+"%");
         ResultSet rs = s.executeQuery();
         if (rs.next()) {
           boolean playerVerified = false;
@@ -31,7 +31,7 @@ public class GoHome {
           while (!playerVerified && hasNext) {
             String[] playerList = rs.getString(1).split(",");
             for (String person : playerList) {
-              if (person.equals(player.getDisplayName())) {
+              if (person.equals(player.getUniqueId().toString())) {
                 playerVerified = true;
                 player.teleport(new Location(Bukkit.getServer().getWorld(rs.getString(5)),
                     rs.getInt(2),rs.getInt(3),rs.getInt(4)));

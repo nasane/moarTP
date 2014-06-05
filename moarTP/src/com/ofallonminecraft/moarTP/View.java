@@ -30,8 +30,8 @@ public class View {
         PreparedStatement s = null;
         if (args.length == 1) {
           s = c.prepareStatement("select location from moarTP where creator=?;");
-          // TODO: find another way (getPlayer() is deprecated)
-          s.setString(1, Bukkit.getServer().getPlayer(args[0]).getUniqueId().toString());
+          // TODO: find another way (getOfflinePlayer() is deprecated)
+          s.setString(1, Bukkit.getServer().getOfflinePlayer(args[0]).getUniqueId().toString());
           rs = s.executeQuery();
         } else {
           rs = c.createStatement().executeQuery("select location from moarTP;");

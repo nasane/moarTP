@@ -23,8 +23,8 @@ public class WhereIs {
         return false;
       }
 
-      // TODO: find another way (getPlayer() is deprecated)
-      if (Bukkit.getServer().getPlayer(args[0])!=null && Bukkit.getServer().getPlayer(args[0]).isOnline()) {
+      // TODO: find another way (getOfflinePlayer() and getPlayer() is deprecated)
+      if (Bukkit.getServer().getOfflinePlayer(args[0])!=null && Bukkit.getServer().getOfflinePlayer(args[0]).isOnline()) {
         Location playerLoc = Bukkit.getServer().getPlayer(args[0]).getLocation();
         int x = playerLoc.getBlockX();
         int y = playerLoc.getBlockY();

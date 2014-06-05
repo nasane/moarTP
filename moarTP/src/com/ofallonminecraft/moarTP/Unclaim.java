@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-
 import com.ofallonminecraft.SpellChecker.SpellChecker;
 
 public class Unclaim {
@@ -33,8 +32,8 @@ public class Unclaim {
       if (creatorName.next() && 
           creatorName.getString(1)!=null &&
           !creatorName.getString(1).equals("null") &&
-          Bukkit.getServer().getPlayer(UUID.fromString(
-              creatorName.getString(1))).getDisplayName().equals(
+          Bukkit.getServer().getOfflinePlayer(UUID.fromString(
+              creatorName.getString(1))).getName().equals(
                   sender.getName())) isCreator = true;
       creatorName.close();
     } catch (Exception e) {

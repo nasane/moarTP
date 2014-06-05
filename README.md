@@ -1,4 +1,4 @@
-# moarTP v0.70
+# moarTP v0.71
 
 Author: Nathan Bossart  
 Website: <http://ofallonminecraft.com/>  
@@ -22,6 +22,10 @@ The 11 commands added by this plugin are:
     /sethome     [location]                                     : set your personal home location
     /gohome                                                     : go to your personal home location
     /whereis     [player]                                       : retrieve the nearest public location to a player
+
+
+# Important Note:
+It is very important that servers running previous versions (<0.71) of this plugin update to the newest version of moarTP!  Minecraft is beginning to allow players to change usernames, which could make it possible for players to alter or delete other players' locations.  As of v0.71, moarTP will automatically switch to using unique player identifiers, which prevents this kind of abuse.  The plugin will appear the same to users and can continue to be used in the same way as before.
 
 
 # Instructions for use:

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -32,12 +33,12 @@ public class SpellChecker {
         } 
         rs.close();
       }
-      // TODO: this won't work anymore
       if (dictionary_subsets==null || dictionary_subsets.contains(CREATORS)) {
         rs = c.createStatement().executeQuery("select distinct creator from moarTP;");
-        if (rs.next()) {
-          d.addWord(rs.getString(1));
-          while (rs.next()) d.addWord(rs.getString(1));
+        while (rs.next()) {
+          if (rs.getString(1)!=null) {
+            d.addWord(Bukkit.getServer().getOfflinePlayer(UUID.fromString(rs.getString(1))).getName());
+          }
         }
         rs.close();
       }

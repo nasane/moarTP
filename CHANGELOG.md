@@ -1,3 +1,6 @@
+### v0.71
+  -Migrated to UUID's.   
+
 ### v0.70
   -Added /desribe.   
   -/claim and /claimsecret encourage users to describe their claims.   

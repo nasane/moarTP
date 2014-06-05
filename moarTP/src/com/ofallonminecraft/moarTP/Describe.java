@@ -37,8 +37,8 @@ public class Describe {
       if (creatorName.next() && 
           creatorName.getString(1)!=null &&
           !creatorName.getString(1).equals("null") &&
-          Bukkit.getServer().getPlayer(UUID.fromString(
-              creatorName.getString(1))).getDisplayName().equals(
+          Bukkit.getServer().getOfflinePlayer(UUID.fromString(
+              creatorName.getString(1))).getName().equals(
                   sender.getName())) isCreator = true;
       creatorName.close();
     } catch (Exception e) {

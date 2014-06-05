@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashSet;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.ofallonminecraft.SpellChecker.SpellChecker;
@@ -12,6 +13,7 @@ public class SetHome {
 
   // TODO: fix result set closure issues
 
+  @SuppressWarnings("deprecation")
   public static boolean sethome(CommandSender sender, String[] args, Player player, Connection c) {
     if (sender.hasPermission("moarTP.sethome")) {
 
@@ -46,7 +48,7 @@ public class SetHome {
           }
           String oldHomeList = rs.getString(1);
           PreparedStatement s2 = c.prepareStatement("select home,location,secret from moarTP where home LIKE ?;");
-          s2.setString(1, "%"+player.getDisplayName()+"%");
+          s2.setString(1, "%"+player.getUniqueId().toString()+"%");
           ResultSet rs2 = s2.executeQuery();
           if (rs2.next()) {
             boolean playerVerified = false;
@@ -54,7 +56,7 @@ public class SetHome {
             while (!playerVerified && hasNext) {
               String[] playerList = rs2.getString(1).split(",");
               for (String person : playerList) {
-                if (person.equals(player.getDisplayName())) {
+                if (person.equals(player.getUniqueId().toString())) {
                   playerVerified = true;
                   if (rs2.getString(2).equals(args[0].toLowerCase())) {
                     sender.sendMessage(args[0].toLowerCase()+" is already your home!");
@@ -62,8 +64,10 @@ public class SetHome {
                     // clear player's old home
                     String newPlayerList = "";
                     for (String person2 : playerList) {
-                      if (!person2.equals(player.getDisplayName())) {
-                        if (!newPlayerList.equals("")) newPlayerList += ","+person2;
+                      if (!person2.equals(player.getUniqueId().toString())) {
+                        // TODO: find another way (getOfflinePlayer is deprecated)
+                        if (!newPlayerList.equals("")) newPlayerList += ","
+                            + Bukkit.getServer().getOfflinePlayer(person2).getUniqueId().toString();
                         else newPlayerList = person2;
                       }
                     }
@@ -108,8 +112,8 @@ public class SetHome {
 
   public static void addPlayerHome(Player player, String oldPlayerList, Connection c, String newHome) {
     String newPlayerList = "";
-    if (oldPlayerList==null || oldPlayerList.equals("null")) newPlayerList = player.getDisplayName();
-    else newPlayerList = oldPlayerList+","+player.getDisplayName();
+    if (oldPlayerList==null || oldPlayerList.equals("null")) newPlayerList = player.getUniqueId().toString();
+    else newPlayerList = oldPlayerList+","+player.getUniqueId().toString();
     String template = "update moarTP set home = ? where location = ?;";
     PreparedStatement update;
     try {
